@@ -20,8 +20,8 @@ Demo:目前在写Admin，等搞定了在搭建一个Demo服务器，先看图吧
 默认采用Sqlite数据库，你可以切换到你喜欢的数据库，数据库配置在`appsettings.json`中。第一次运行会初始化数据库，并写入测试数据。
 
 ## Remark
-1. 项目全部采用.NET5开发，同时也建议升级到.NET5。  
+1. 项目全部采用.NET 5开发，同时也建议升级到.NET 5。  
 2. 测试数据位于`testdata.json`，你可以修改或者删掉它。  
 3. 默认账号是`admin`，密码是`123456`。  
-4. ef文件中的为原版IdentityServer4.EntityFramework项目，可以参考。  
+4. ef文件夹中的为原版IdentityServer4.EntityFramework项目，可以参考。  
   
