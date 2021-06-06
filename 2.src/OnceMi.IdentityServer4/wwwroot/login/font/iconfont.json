@@ -1,0 +1,23 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19705595",
+      "name": "Profile",
+      "font_class": "Profile",
+      "unicode": "e752",
+      "unicode_decimal": 59218
+    },
+    {
+      "icon_id": "19705609",
+      "name": "Unlock",
+      "font_class": "Unlock",
+      "unicode": "e756",
+      "unicode_decimal": 59222
+    }
+  ]
+}

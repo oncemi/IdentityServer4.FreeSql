@@ -1,0 +1,492 @@
+{
+  "Roles": [
+    {
+      "ParentId": null,
+      "Name": "SysAdmin",
+      "RoleName": "系统管理员",
+      "Description": null,
+      "Sort": 0,
+      "IsEnabled": true,
+      "UserRoles": null,
+      "IsDeleted": false,
+      "CreatedUserId": 2673199201722374,
+      "CreatedTime": "2021-06-06 12:49:44",
+      "UpdatedUserId": null,
+      "UpdatedTime": null,
+      "Id": 2673199201656837
+    },
+    {
+      "ParentId": null,
+      "Name": "Test",
+      "RoleName": "测试人员",
+      "Description": null,
+      "Sort": 0,
+      "IsEnabled": true,
+      "UserRoles": null,
+      "IsDeleted": false,
+      "CreatedUserId": 2673199201722374,
+      "CreatedTime": "2021-06-06 12:49:44",
+      "UpdatedUserId": null,
+      "UpdatedTime": null,
+      "Id": 2673199201722373
+    }
+  ],
+  "Users": [
+    {
+      "UserName": "admin",
+      "NickName": "管理员",
+      "Avatar": null,
+      "Status": 1,
+      "Gender": 1,
+      "BirthDay": null,
+      "Address": null,
+      "PhoneNumberConfirmed": true,
+      "PhoneNumber": "19800000000",
+      "Password": "123456",
+      "EmailConfirmed": true,
+      "Email": "open@oncemi.com",
+      "ProviderName": null,
+      "ProviderId": null,
+      "UserRoles": [
+        {
+          "UserId": 2673199201722374,
+          "RoleId": 2673199201656837,
+          "Role": null,
+          "User": null,
+          "IsDeleted": false,
+          "CreatedUserId": 2673199201722374,
+          "CreatedTime": "2021-06-06 12:49:44",
+          "UpdatedUserId": null,
+          "UpdatedTime": null,
+          "Id": 2673199201853445
+        },
+        {
+          "UserId": 2673199201722374,
+          "RoleId": 2673199201722373,
+          "Role": null,
+          "User": null,
+          "IsDeleted": false,
+          "CreatedUserId": 2673199201722374,
+          "CreatedTime": "2021-06-06 12:49:44",
+          "UpdatedUserId": null,
+          "UpdatedTime": null,
+          "Id": 2673199201853446
+        }
+      ],
+      "IsDeleted": false,
+      "CreatedUserId": null,
+      "CreatedTime": null,
+      "UpdatedUserId": null,
+      "UpdatedTime": null,
+      "Id": 2673199201722374
+    }
+  ],
+  "Resources": [
+    {
+      "Enabled": true,
+      "Name": "roles",
+      "DisplayName": "角色信息",
+      "Description": null,
+      "Required": false,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [
+        {
+          "IdentityResourceId": 2673199207424005,
+          "IdentityResource": null,
+          "Type": "role",
+          "Id": 2673199207424006
+        }
+      ],
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "NonEditable": false,
+      "Id": 2673199207424005
+    },
+    {
+      "Enabled": true,
+      "Name": "openid",
+      "DisplayName": "用户Id",
+      "Description": null,
+      "Required": true,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [
+        {
+          "IdentityResourceId": 2673199207424007,
+          "IdentityResource": null,
+          "Type": "sub",
+          "Id": 2673199207424008
+        }
+      ],
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "NonEditable": false,
+      "Id": 2673199207424007
+    },
+    {
+      "Enabled": true,
+      "Name": "profile",
+      "DisplayName": "基本信息",
+      "Description": null,
+      "Required": true,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "name",
+          "Id": 2673199207424010
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "family_name",
+          "Id": 2673199207424011
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "given_name",
+          "Id": 2673199207424012
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "middle_name",
+          "Id": 2673199207424013
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "nickname",
+          "Id": 2673199207424014
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "preferred_username",
+          "Id": 2673199207424015
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "profile",
+          "Id": 2673199207424016
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "picture",
+          "Id": 2673199207424017
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "gender",
+          "Id": 2673199207424018
+        },
+        {
+          "IdentityResourceId": 2673199207424009,
+          "IdentityResource": null,
+          "Type": "updated_at",
+          "Id": 2673199207424019
+        }
+      ],
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "NonEditable": false,
+      "Id": 2673199207424009
+    },
+    {
+      "Enabled": true,
+      "Name": "email",
+      "DisplayName": "邮箱",
+      "Description": null,
+      "Required": false,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [
+        {
+          "IdentityResourceId": 2673199207424020,
+          "IdentityResource": null,
+          "Type": "email",
+          "Id": 2673199207424021
+        },
+        {
+          "IdentityResourceId": 2673199207424020,
+          "IdentityResource": null,
+          "Type": "email_verified",
+          "Id": 2673199207424022
+        }
+      ],
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "NonEditable": false,
+      "Id": 2673199207424020
+    },
+    {
+      "Enabled": true,
+      "Name": "address",
+      "DisplayName": "地址",
+      "Description": null,
+      "Required": false,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [
+        {
+          "IdentityResourceId": 2673199207424023,
+          "IdentityResource": null,
+          "Type": "address",
+          "Id": 2673199207424024
+        }
+      ],
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "NonEditable": false,
+      "Id": 2673199207424023
+    },
+    {
+      "Enabled": true,
+      "Name": "phone",
+      "DisplayName": "电话号码",
+      "Description": null,
+      "Required": false,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [
+        {
+          "IdentityResourceId": 2673199207424025,
+          "IdentityResource": null,
+          "Type": "phone_number",
+          "Id": 2673199207424026
+        },
+        {
+          "IdentityResourceId": 2673199207424025,
+          "IdentityResource": null,
+          "Type": "phone_number_verified",
+          "Id": 2673199207424027
+        }
+      ],
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "NonEditable": false,
+      "Id": 2673199207424025
+    }
+  ],
+  "ApiScopes": [
+    {
+      "Enabled": true,
+      "Name": "api1",
+      "DisplayName": "api1",
+      "Description": null,
+      "Required": false,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [],
+      "Properties": null,
+      "Id": 2673199207424028
+    },
+    {
+      "Enabled": true,
+      "Name": "client_management",
+      "DisplayName": "client_management",
+      "Description": null,
+      "Required": false,
+      "Emphasize": false,
+      "ShowInDiscoveryDocument": true,
+      "UserClaims": [],
+      "Properties": null,
+      "Id": 2673199207424029
+    }
+  ],
+  "ApiResources": [
+    {
+      "Enabled": true,
+      "Name": "api1",
+      "DisplayName": "api1",
+      "Description": null,
+      "AllowedAccessTokenSigningAlgorithms": null,
+      "ShowInDiscoveryDocument": true,
+      "Created": "0001-01-01 00:00:00",
+      "Updated": null,
+      "LastAccessed": null,
+      "NonEditable": false,
+      "Secrets": null,
+      "Scopes": [
+        {
+          "Scope": "api1",
+          "ApiResourceId": 2673199207424030,
+          "ApiResource": null,
+          "Id": 2673199207424031
+        }
+      ],
+      "UserClaims": [
+        {
+          "ApiResourceId": 2673199207424030,
+          "ApiResource": null,
+          "Type": "sub",
+          "Id": 2673199207424032
+        },
+        {
+          "ApiResourceId": 2673199207424030,
+          "ApiResource": null,
+          "Type": "role",
+          "Id": 2673199207424033
+        },
+        {
+          "ApiResourceId": 2673199207424030,
+          "ApiResource": null,
+          "Type": "name",
+          "Id": 2673199207424034
+        },
+        {
+          "ApiResourceId": 2673199207424030,
+          "ApiResource": null,
+          "Type": "nickname",
+          "Id": 2673199207424035
+        }
+      ],
+      "Properties": null,
+      "Id": 2673199207424030
+    }
+  ],
+  "Clients": [
+    {
+      "Enabled": true,
+      "ClientId": "2515961661554757",
+      "ProtocolType": "oidc",
+      "ClientSecrets": [
+        {
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Description": null,
+          "Value": "oYjppIizd29W4eodalgf+Vry0MfyLunBPVZeFmOelvU=",
+          "Expiration": null,
+          "Type": "SharedSecret",
+          "Created": "2021-06-06 04:49:44",
+          "Id": 2673199207489542
+        }
+      ],
+      "RequireClientSecret": false,
+      "ClientName": "2515961661554757",
+      "Description": null,
+      "ClientUri": "",
+      "LogoUri": null,
+      "RequireConsent": true,
+      "AllowRememberConsent": false,
+      "AlwaysIncludeUserClaimsInIdToken": false,
+      "AllowedGrantTypes": [
+        {
+          "GrantType": "authorization_code",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489541
+        }
+      ],
+      "RequirePkce": true,
+      "AllowPlainTextPkce": false,
+      "RequireRequestObject": false,
+      "AllowAccessTokensViaBrowser": true,
+      "RedirectUris": [
+        {
+          "RedirectUri": "https://localhost:5001/signin-oidc",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489543
+        }
+      ],
+      "PostLogoutRedirectUris": null,
+      "FrontChannelLogoutUri": "https://localhost:5001/signout-oidc",
+      "FrontChannelLogoutSessionRequired": true,
+      "BackChannelLogoutUri": null,
+      "BackChannelLogoutSessionRequired": true,
+      "AllowOfflineAccess": true,
+      "AllowedScopes": [
+        {
+          "Scope": "sub",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489544
+        },
+        {
+          "Scope": "openid",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489545
+        },
+        {
+          "Scope": "email",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489546
+        },
+        {
+          "Scope": "phone_number",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489547
+        },
+        {
+          "Scope": "profile",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489548
+        },
+        {
+          "Scope": "roles",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489549
+        },
+        {
+          "Scope": "api1",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489550
+        },
+        {
+          "Scope": "name",
+          "ClientId": 2673199207424036,
+          "Client": null,
+          "Id": 2673199207489551
+        }
+      ],
+      "IdentityTokenLifetime": 300,
+      "AllowedIdentityTokenSigningAlgorithms": null,
+      "AccessTokenLifetime": 3600,
+      "AuthorizationCodeLifetime": 300,
+      "ConsentLifetime": null,
+      "AbsoluteRefreshTokenLifetime": 2592000,
+      "SlidingRefreshTokenLifetime": 1296000,
+      "RefreshTokenUsage": 1,
+      "UpdateAccessTokenClaimsOnRefresh": false,
+      "RefreshTokenExpiration": 1,
+      "AccessTokenType": 0,
+      "EnableLocalLogin": true,
+      "IdentityProviderRestrictions": null,
+      "IncludeJwtId": false,
+      "Claims": null,
+      "AlwaysSendClientClaims": false,
+      "ClientClaimsPrefix": "client_",
+      "PairWiseSubjectSalt": null,
+      "AllowedCorsOrigins": null,
+      "Properties": null,
+      "Created": "2021-06-06 04:49:44",
+      "Updated": null,
+      "LastAccessed": null,
+      "UserSsoLifetime": null,
+      "UserCodeType": null,
+      "DeviceCodeLifetime": 300,
+      "NonEditable": false,
+      "Id": 2673199207424036
+    }
+  ]
+}
