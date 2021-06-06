@@ -7,11 +7,11 @@
 ## Preview
 Demo:目前在写Admin，等搞定了在搭建一个Demo服务器，先看图吧。
   
-![](https://www.showdoc.com.cn/server/api/attachment/visitfile/sign/56601d4ccf11142c90d0105342b5f074)
+![](https://github.com/oncemi/IdentityServer4.FreeSql/raw/main/1.docs/img/01.jpg)
 
 ------------
 
-![](https://www.showdoc.com.cn/server/api/attachment/visitfile/sign/12bdb23373ba0e1b3fae6c47563313af)
+![](https://github.com/oncemi/IdentityServer4.FreeSql/raw/main/1.docs/img/02.jpg)
 
 
 ## How to use  
