@@ -9,7 +9,7 @@ Demo:目前在写Admin，等搞定了在搭建一个Demo服务器，先看图吧
   
 ![](https://github.com/oncemi/IdentityServer4.FreeSql/raw/main/1.docs/img/01.jpg)
 
-------------
+<br />
 
 ![](https://github.com/oncemi/IdentityServer4.FreeSql/raw/main/1.docs/img/02.jpg)
 
