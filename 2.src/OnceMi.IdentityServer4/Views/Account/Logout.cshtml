@@ -1,15 +1,27 @@
 @model LogoutViewModel
+@{
+    ViewData["Title"] = "退出登录";
+}
+<div class="row justify-content-md-center">
+    <div class="col-sm-8">
+        <div class="col align-self-center">
+            <div class="logout-page">
+                <div class="lead">
+                    <h1>退出登录</h1>
+                    <p>确定要退出登录吗?</p>
+                </div>
 
-<div class="logout-page">
-    <div class="lead">
-        <h1>退出登录</h1>
-        <p>确定要退出登录吗?</p>
-    </div>
-
-    <form asp-action="Logout">
-        <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
-        <div class="form-group">
-            <button class="btn btn-primary">是</button>
+                <form asp-action="Logout">
+                    <input type="hidden" name="logoutId" value="@Model.LogoutId" />
+                    <div class="form-group">
+                        <button class="btn btn-primary" style="width:70px;">是</button>
+                        <button class="btn btn-danger" style="width:70px;" onclick="javascript: history.go(-1); return false;">否</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
+
+
+

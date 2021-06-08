@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Projects\oncemi_identityserver4\2.src\OnceMi.IdentityServer4\bin\Release\publish\</_PublishTargetUrl>
+    <History>True|2021-06-08T10:38:51.5073099Z;True|2021-06-08T18:28:35.4200825+08:00;True|2021-06-08T18:24:04.8083527+08:00;True|2021-06-08T18:10:54.1100836+08:00;</History>
+  </PropertyGroup>
+</Project>

@@ -1,30 +1,71 @@
+@using IdentityServer4.Extensions
+@{
+    string name = string.IsNullOrEmpty(Context.User?.GetDisplayName()) ? "未登录" : Context.User?.GetDisplayName();
+}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-
-    <title>IdentityServer4</title>
-
-    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
-
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>@ViewData["Title"] - IdentityServer4统一认证中心</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="IdentityServer4,C#,.Net Core,.net5,猿米科技,oncemi">
+    <meta name="description" content="由猿米科技基于FreeSql打造的IdentityServer4统一认证中心。">
+    <meta name="author" content="oncemi">
+    <link href="~/lib/light/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/lib/light/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="~/lib/light/css/animate.min.css" rel="stylesheet">
+    <link href="~/lib/light/css/style.min.css" rel="stylesheet">
     @await RenderSectionAsync("styles", required: false)
 </head>
-<body>
-    <partial name="_Nav" />
 
-    <div class="container body-container">
+<body>
+    <!--头部信息-->
+    <header class="lyear-layout-header" style="padding-left:0px;">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <div class="lyear-aside-toggler">
+                    <h3 style="font-size:25px"><a href="~/">IdentityServer4</a></h3>
+                </div>
+            </div>
+
+            <ul class="navbar-right d-flex align-items-center">
+                <li class="dropdown dropdown-profile">
+                    <a href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle">
+                        <img id="test" class="img-avatar img-avatar-36 m-r-10" src="~/icon.png" alt="@name" />
+                        <span>@name</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a class="multitabs dropdown-item" data-url="lyear_pages_profile.html" href="javascript:void(0)"><i class="mdi mdi-account"></i> 个人信息</a>
+                        </li>
+                        <li>
+                            <a class="multitabs dropdown-item" data-url="lyear_pages_edit_pwd.html" href="javascript:void(0)"><i class="mdi mdi-lock-outline"></i> 修改密码</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="~/account/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </nav>
+
+    </header>
+    <!--End 头部信息-->
+    <div class="container-fluid" style="padding-top:88px !important">
         @RenderBody()
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script type="text/javascript" src="~/lib/light/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/light/js/popper.min.js"></script>
+    <script type="text/javascript" src="~/lib/light/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/lib/light/js/main.min.js"></script>
     @await RenderSectionAsync("scripts", required: false)
 </body>
 </html>
