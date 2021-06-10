@@ -1,11 +1,10 @@
 ﻿using FreeSql.DataAnnotations;
-using IdentityServer4.FreeSql.Storage.Entities;
 using System.Collections.Generic;
 
-namespace IdentityServer4.FreeSql.User.Entities
+namespace OnceMi.IdentityServer4.User.Entities
 {
     [Index("index_{TableName}_" + nameof(Name), nameof(Name), false)]
-    public class Roles : IBaseEntity
+    public class Roles : IBaseEntity<long>
     {
         [Column(Position = 2, IsNullable = true)]
         public long? ParentId { get; set; }

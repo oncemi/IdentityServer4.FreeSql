@@ -20,23 +20,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreeSql.Provider.MySql" Version="2.5.100" />
-    <PackageReference Include="FreeSql.Provider.Oracle" Version="2.5.100" />
-    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.5.100" />
-    <PackageReference Include="FreeSql.Provider.Sqlite" Version="2.5.100" />
-    <PackageReference Include="FreeSql.Provider.SqlServer" Version="2.5.100" />
+    <PackageReference Include="FreeSql.Provider.MySql" Version="2.5.200" />
+    <PackageReference Include="FreeSql.Provider.Oracle" Version="2.5.200" />
+    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.5.200" />
+    <PackageReference Include="FreeSql.Provider.Sqlite" Version="2.5.200" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" Version="2.5.200" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.12.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
     <PackageReference Include="OnceMi.AspNetCore.IdGenerator" Version="1.0.2" />
     <PackageReference Include="System.Data.Odbc" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.114.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.114.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IdentityServer4.FreeSql.User\IdentityServer4.FreeSql.User.csproj" />
     <ProjectReference Include="..\IdentityServer4.FreeSql\IdentityServer4.FreeSql.csproj" />
+    <ProjectReference Include="..\OnceMi.IdentityServer4.User\OnceMi.IdentityServer4.User.csproj" />
   </ItemGroup>
 
   <ItemGroup>

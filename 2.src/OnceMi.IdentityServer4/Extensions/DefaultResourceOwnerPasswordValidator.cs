@@ -4,8 +4,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Microsoft.Extensions.Logging;
 using System;
-using IdentityServer4.FreeSql.User;
-using IdentityServer4.FreeSql.User.Utils;
+using OnceMi.IdentityServer4.User;
 
 namespace OnceMi.IdentityServer4.Extensions
 {

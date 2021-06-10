@@ -6,14 +6,12 @@ using Microsoft.Extensions.Logging;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using IdentityServer4.FreeSql.User;
-using IdentityServer4.FreeSql.User.Enums;
 using System.Linq;
 using IdentityModel;
-using IdentityServer4.FreeSql.User.Entities;
-using System.Reflection;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Http;
+using OnceMi.IdentityServer4.User;
+using OnceMi.IdentityServer4.User.Entities;
 
 namespace OnceMi.IdentityServer4.Extensions
 {

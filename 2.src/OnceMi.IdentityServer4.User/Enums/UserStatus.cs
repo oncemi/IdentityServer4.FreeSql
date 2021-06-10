@@ -1,5 +1,5 @@
 ﻿
-namespace IdentityServer4.FreeSql.User.Enums
+namespace OnceMi.IdentityServer4.User
 {
     public enum UserStatus
     {

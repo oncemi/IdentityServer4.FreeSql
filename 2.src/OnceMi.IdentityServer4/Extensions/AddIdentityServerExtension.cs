@@ -1,8 +1,6 @@
 ﻿using FreeSql;
 using IdentityModel;
-using IdentityServer4;
 using IdentityServer4.FreeSql.Storage.DbContexts;
-using IdentityServer4.FreeSql.User;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OnceMi.IdentityServer4.User;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -21,7 +20,6 @@ namespace OnceMi.IdentityServer4.Extensions
     {
         public static IServiceCollection AddIdentityServerWithFreeSql(this IServiceCollection services)
         {
-
             using (var provider = services.BuildServiceProvider())
             {
                 IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
@@ -36,28 +34,19 @@ namespace OnceMi.IdentityServer4.Extensions
                 DataType dbType = configuration.GetValue<DataType>("DbConnectionString:DbType");
                 if(dbType == DataType.Sqlite)
                 {
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        connectionString = connectionString.Replace("/", "\\");
-                    else
-                        connectionString = connectionString.Replace("\\", "/");
-                    if (connectionString.Contains("{root}", StringComparison.OrdinalIgnoreCase))
-                        connectionString = connectionString.Replace("{root}", AppContext.BaseDirectory);
+                    connectionString = FreeSqlExtension.GetSqliteConnectString(connectionString);
                 }
 
                 var dbBuilder = new FreeSqlBuilder()
                     .UseConnectionString(dbType, connectionString)
                     .UseAutoSyncStructure(true)
-                    .UseNoneCommandParameter(true)
                     .CreateDatabaseIfNotExists();
-
                 var configurationDbContext = dbBuilder.Build<ConfigurationDbContext>();
                 var persistedGrantDbContext = dbBuilder.Build<PersistedGrantDbContext>();
-                var userDbContext = dbBuilder.Build<UserDbContext>();
-
                 services.AddSingleton<IFreeSql<ConfigurationDbContext>>(configurationDbContext);
                 services.AddSingleton<IFreeSql<PersistedGrantDbContext>>(persistedGrantDbContext);
-                services.AddSingleton<IFreeSql<UserDbContext>>(userDbContext);
-                services.AddScoped<UserDbContext>();
+                //添加用户
+                services.AddUserDbContext(dbBuilder);
 
                 var builder = services.AddIdentityServer()
                     .AddConfigurationStore(options =>
@@ -70,7 +59,7 @@ namespace OnceMi.IdentityServer4.Extensions
 
                         // this enables automatic token cleanup. this is optional.
                         options.EnableTokenCleanup = true;
-                        options.TokenCleanupInterval = 3600; // interval in seconds (default is 3600)
+                        options.TokenCleanupInterval = 3600;
                     })
                     .AddUserIdentity();
 

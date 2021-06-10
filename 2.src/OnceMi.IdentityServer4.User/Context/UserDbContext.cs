@@ -1,11 +1,11 @@
 ﻿using FreeSql;
-using IdentityServer4.FreeSql.User.Entities;
+using OnceMi.IdentityServer4.User.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace IdentityServer4.FreeSql.User
+namespace OnceMi.IdentityServer4.User
 {
     public class UserDbContext : DbContext
     {

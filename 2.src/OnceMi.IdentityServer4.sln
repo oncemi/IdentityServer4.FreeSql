@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.FreeSql", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.FreeSql.Storage", "IdentityServer4.FreeSql.Storage\IdentityServer4.FreeSql.Storage.csproj", "{6B2FD53A-C376-47D5-A631-7647C473286C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.FreeSql.User", "IdentityServer4.FreeSql.User\IdentityServer4.FreeSql.User.csproj", "{65948A88-50AE-4953-9628-F5341D656E23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnceMi.IdentityServer4.User", "OnceMi.IdentityServer4.User\OnceMi.IdentityServer4.User.csproj", "{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{6B2FD53A-C376-47D5-A631-7647C473286C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B2FD53A-C376-47D5-A631-7647C473286C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B2FD53A-C376-47D5-A631-7647C473286C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65948A88-50AE-4953-9628-F5341D656E23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65948A88-50AE-4953-9628-F5341D656E23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65948A88-50AE-4953-9628-F5341D656E23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65948A88-50AE-4953-9628-F5341D656E23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

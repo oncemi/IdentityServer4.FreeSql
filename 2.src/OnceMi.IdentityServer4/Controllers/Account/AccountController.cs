@@ -2,9 +2,6 @@ using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
-using IdentityServer4.FreeSql.User;
-using IdentityServer4.FreeSql.User.Enums;
-using IdentityServer4.FreeSql.User.Utils;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
@@ -16,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OnceMi.IdentityServer4.Extensions;
 using OnceMi.IdentityServer4.Filters;
 using OnceMi.IdentityServer4.Models;
+using OnceMi.IdentityServer4.User;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,38 +85,7 @@ namespace OnceMi.IdentityServer4.Controllers
             // the user clicked the "cancel" button
             if (button != "login")
             {
-                if (context != null)
-                {
-                    // if the user cancels, send a result back into IdentityServer as if they 
-                    // denied the consent (even if this client does not require consent).
-                    // this will send back an access denied OIDC error response to the client.
-                    await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    if (context.IsNativeClient())
-                    {
-                        // The client is native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        //return this.LoadingPage("Redirect", model.ReturnUrl);
-
-                        return Json(new ResultObject<LoginResult>(0)
-                        {
-                            Data = new LoginResult()
-                            {
-                                IsRedirect = true,
-                                RedirectUrl = model.ReturnUrl,
-                            }
-                        });
-                    }
-                    return Json(new ResultObject<LoginResult>(0)
-                    {
-                        Data = new LoginResult()
-                        {
-                            IsRedirect = true,
-                            RedirectUrl = model.ReturnUrl,
-                        }
-                    });
-                }
-                else
+                if (context == null)
                 {
                     // since we don't have a valid context, then we just go back to the home page
                     return Json(new ResultObject<LoginResult>(0)
@@ -130,6 +97,25 @@ namespace OnceMi.IdentityServer4.Controllers
                         }
                     });
                 }
+                // if the user cancels, send a result back into IdentityServer as if they 
+                // denied the consent (even if this client does not require consent).
+                // this will send back an access denied OIDC error response to the client.
+                await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                if (context.IsNativeClient())
+                {
+                    // The client is native, so this change in how to
+                    // return the response is for better UX for the end user.
+                    //return this.LoadingPage("Redirect", model.ReturnUrl);
+                }
+                return Json(new ResultObject<LoginResult>(0)
+                {
+                    Data = new LoginResult()
+                    {
+                        IsRedirect = true,
+                        RedirectUrl = model.ReturnUrl,
+                    }
+                });
             }
 
             if (!ModelState.IsValid)
@@ -163,6 +149,7 @@ namespace OnceMi.IdentityServer4.Controllers
                 var isuser = new IdentityServerUser(userInfo.Id.ToString())
                 {
                     DisplayName = userInfo.UserName,
+                    AuthenticationTime = DateTime.Now,
                 };
                 await HttpContext.SignInAsync(isuser, props);
                 if (context != null)
@@ -222,110 +209,6 @@ namespace OnceMi.IdentityServer4.Controllers
                 return Json(new ResultObject<LoginResult>(-1, AccountOptions.InvalidCredentialsErrorMessage));
             }
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(LoginInputModel model, string button)
-        //{
-        //    // check if we are in the context of an authorization request
-        //    var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-        //    // the user clicked the "cancel" button
-        //    if (button != "login")
-        //    {
-        //        if (context != null)
-        //        {
-        //            // if the user cancels, send a result back into IdentityServer as if they 
-        //            // denied the consent (even if this client does not require consent).
-        //            // this will send back an access denied OIDC error response to the client.
-        //            await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
-        //            // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-        //            if (context.IsNativeClient())
-        //            {
-        //                // The client is native, so this change in how to
-        //                // return the response is for better UX for the end user.
-        //                return this.LoadingPage("Redirect", model.ReturnUrl);
-        //            }
-        //            return Redirect(model.ReturnUrl);
-        //        }
-        //        else
-        //        {
-        //            // since we don't have a valid context, then we just go back to the home page
-        //            return Redirect("~/");
-        //        }
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        var userInfo = await _userDbContext.Users.Where(p => (p.Id.ToString() == model.Username
-        //            || p.UserName == model.Username
-        //            || (p.Email == model.Username && p.EmailConfirmed)
-        //            || (p.PhoneNumber == model.Username && p.PhoneNumberConfirmed))
-        //            && p.Status == UserStatus.Enable)
-        //            .FirstAsync();
-        //        if (userInfo.Authenticate(model.Password))
-        //        {
-        //            //var user = _users.FindByUsername(model.Username);
-        //            await _events.RaiseAsync(new UserLoginSuccessEvent(userInfo.UserName, userInfo.Id.ToString(), userInfo.NickName, clientId: context?.Client.ClientId));
-
-        //            // only set explicit expiration here if user chooses "remember me". 
-        //            // otherwise we rely upon expiration configured in cookie middleware.
-        //            AuthenticationProperties props = null;
-        //            if (AccountOptions.AllowRememberLogin && model.RememberLogin)
-        //            {
-        //                props = new AuthenticationProperties
-        //                {
-        //                    IsPersistent = true,
-        //                    ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
-        //                };
-        //            };
-
-        //            var isuser = new IdentityServerUser(userInfo.Id.ToString())
-        //            {
-        //                DisplayName = userInfo.UserName,
-        //            };
-        //            await HttpContext.SignInAsync(isuser, props);
-        //            if (context != null)
-        //            {
-        //                if (context.IsNativeClient())
-        //                {
-        //                    // The client is native, so this change in how to
-        //                    // return the response is for better UX for the end user.
-        //                    return this.LoadingPage("Redirect", model.ReturnUrl);
-        //                }
-
-        //                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-        //                return Redirect(model.ReturnUrl);
-        //            }
-
-        //            // request for a local page
-        //            if (Url.IsLocalUrl(model.ReturnUrl))
-        //            {
-        //                return Redirect(model.ReturnUrl);
-        //            }
-        //            else if (string.IsNullOrEmpty(model.ReturnUrl))
-        //            {
-        //                return Redirect("~/");
-        //            }
-        //            else
-        //            {
-        //                // user might have clicked on a malicious link - should be logged
-        //                throw new Exception("invalid return URL");
-        //            }
-        //        }
-
-        //        await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
-        //        ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
-        //    }
-        //    else
-        //    {
-        //        var values = ModelState.Values.ToList();
-        //        var keys = ModelState.Keys.ToList();
-        //    }
-
-        //    // something went wrong, show form with error
-        //    var vm = await BuildLoginViewModelAsync(model);
-        //    return View(vm);
-        //}
 
         #endregion
 

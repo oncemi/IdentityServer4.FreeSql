@@ -1,8 +1,8 @@
-﻿using IdentityServer4.FreeSql.User.Entities;
+﻿using OnceMi.IdentityServer4.User.Entities;
 using System;
 using System.Text;
 
-namespace IdentityServer4.FreeSql.User.Utils
+namespace OnceMi.IdentityServer4.User
 {
     public static class UserPasswdExtension
     {

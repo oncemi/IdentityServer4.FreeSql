@@ -1,9 +1,8 @@
 ﻿using FreeSql.DataAnnotations;
-using IdentityServer4.FreeSql.Storage.Entities;
 
-namespace IdentityServer4.FreeSql.User.Entities
+namespace OnceMi.IdentityServer4.User.Entities
 {
-    public class LoginHistory : IBaseEntity
+    public class LoginHistory : IBaseEntity<long>
     {
         public long UserId { get; set; }
 

@@ -3,24 +3,19 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Version>1.0.1</Version>
-    <FileVersion>1.0.1.1</FileVersion>
     <AssemblyVersion>1.0.1.1</AssemblyVersion>
     <Authors>OnceMi</Authors>
-    <Company>OnceMi</Company>
-    <Description>基于FreeSql实现的IdentityServer4。</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>IdentityServer4用户模块。</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <RepositoryUrl>https://github.com/oncemi/IdentityServer4.FreeSql</RepositoryUrl>
     <PackageProjectUrl>https://github.com/oncemi/IdentityServer4.FreeSql</PackageProjectUrl>
     <RepositoryType>Github</RepositoryType>
+    <RepositoryUrl>https://github.com/oncemi/IdentityServer4.FreeSql</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="FreeSql" Version="2.5.200" />
     <PackageReference Include="FreeSql.DbContext" Version="2.5.200" />
-    <PackageReference Include="IdentityServer4" Version="4.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
   </ItemGroup>
 

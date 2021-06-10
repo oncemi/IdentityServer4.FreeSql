@@ -1,14 +1,12 @@
 ﻿using FreeSql.DataAnnotations;
-using IdentityServer4.FreeSql.Storage.Entities;
-using IdentityServer4.FreeSql.User.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace IdentityServer4.FreeSql.User.Entities
+namespace OnceMi.IdentityServer4.User.Entities
 {
     [Index("index_{TableName}_" + nameof(UserName), nameof(UserName), true)]
-    public class Users : IBaseEntity
+    public class Users : IBaseEntity<long>
     {
         /// <summary>
         /// 

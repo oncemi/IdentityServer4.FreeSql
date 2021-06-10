@@ -1,8 +1,6 @@
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;
-using IdentityServer4.FreeSql.User;
-using IdentityServer4.FreeSql.User.Entities;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
@@ -12,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnceMi.IdentityServer4.Extensions;
 using OnceMi.IdentityServer4.Filters;
+using OnceMi.IdentityServer4.User;
+using OnceMi.IdentityServer4.User.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

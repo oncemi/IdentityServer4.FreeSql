@@ -1,8 +1,8 @@
 ﻿using IdentityServer4.FreeSql.Storage.DbContexts;
-using IdentityServer4.FreeSql.User;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OnceMi.IdentityServer4.User;
 using System.Threading;
 
 namespace OnceMi.IdentityServer4.Extensions
@@ -27,11 +27,6 @@ namespace OnceMi.IdentityServer4.Extensions
                 if (persistedGrantDbContext != null)
                 {
                     BindLog(_logger, persistedGrantDbContext, nameof(PersistedGrantDbContext));
-                }
-                IFreeSql<UserDbContext> userDbContext = scope.ServiceProvider.GetService<IFreeSql<UserDbContext>>();
-                if (userDbContext != null)
-                {
-                    BindLog(_logger, userDbContext, nameof(UserDbContext));
                 }
             }
         }

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using FreeSql;
 using MySql.Data.MySqlClient;
 using Npgsql;
@@ -13,6 +14,20 @@ namespace OnceMi.IdentityServer4.Extensions
 {
     internal static class FreeSqlExtension
     {
+        public static string GetSqliteConnectString(string source)
+        {
+            string newString;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                newString = source.Replace("/", "\\");
+            else
+                newString = source.Replace("\\", "/");
+
+            if (newString.Contains("{root}", StringComparison.OrdinalIgnoreCase))
+                newString = source.Replace("{root}", AppContext.BaseDirectory);
+
+            return newString;
+        }
+
         /// <summary>
         /// 请在UseConnectionString配置后调用此方法
         /// </summary>

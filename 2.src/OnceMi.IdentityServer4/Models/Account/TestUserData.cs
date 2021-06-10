@@ -1,9 +1,6 @@
 ﻿using IdentityServer4.FreeSql.Storage.Entities;
-using IdentityServer4.FreeSql.User.Entities;
-using System;
+using OnceMi.IdentityServer4.User.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnceMi.IdentityServer4.Models
 {
