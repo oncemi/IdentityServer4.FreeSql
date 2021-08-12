@@ -10,12 +10,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using OnceMi.AspNetCore.IdGenerator;
 using OnceMi.IdentityServer4.Extensions;
+using OnceMi.IdentityServer4.Extensions.Utils;
 using OnceMi.IdentityServer4.Filters;
 using OnceMi.IdentityServer4.Models;
 using OnceMi.IdentityServer4.User;
+using OnceMi.IdentityServer4.User.Entities;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace OnceMi.IdentityServer4.Controllers
@@ -34,17 +38,22 @@ namespace OnceMi.IdentityServer4.Controllers
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IIdGeneratorService _idGenerator;
+        private readonly IHttpContextAccessor _accessor;
 
-        public AccountController(
-            IIdentityServerInteractionService interaction,
-            IClientStore clientStore,
-            IAuthenticationSchemeProvider schemeProvider,
-            IEventService events,
-            UserDbContext userDbContext)
+        public AccountController(IIdentityServerInteractionService interaction
+            , IClientStore clientStore
+            , IAuthenticationSchemeProvider schemeProvider
+            , IEventService events
+            , UserDbContext userDbContext
+            , IIdGeneratorService idGenerator
+            , IHttpContextAccessor accessor)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
             _userDbContext = userDbContext ?? throw new ArgumentNullException(nameof(UserDbContext));
+            _idGenerator = idGenerator ?? throw new ArgumentNullException(nameof(idGenerator));
+            _accessor = accessor;
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
@@ -129,10 +138,28 @@ namespace OnceMi.IdentityServer4.Controllers
                 || p.UserName == model.Username
                 || (p.Email == model.Username && p.EmailConfirmed)
                 || (p.PhoneNumber == model.Username && p.PhoneNumberConfirmed))
-                && p.Status == UserStatus.Enable)
+                && p.Status == UserStatus.Enable
+                && !p.IsDeleted)
                 .FirstAsync();
-            if (userInfo.Authenticate(model.Password))
+            if (userInfo != null && userInfo.Authenticate(model.Password))
             {
+                RequestHelper requestHelper = new RequestHelper(HttpContext);
+                //写登录日志
+                await _userDbContext.LoginHistory.AddAsync(new LoginHistory()
+                {
+                    Id = _idGenerator.NewId(),
+                    UserId = userInfo.Id,
+                    IP = requestHelper.GetRequestIpAddress(),
+                    Browser = requestHelper.GetBrowser(),
+                    Os = requestHelper.GetOSName(),
+                    Device = requestHelper.GetDevice(),
+                    UserAgent = Request.Headers["User-Agent"],
+                    Type = LoginHistoryType.Login,
+                    Status = true,
+                    Message = "登录成功",
+                });
+                await _userDbContext.SaveChangesAsync();
+
                 //var user = _users.FindByUsername(model.Username);
                 await _events.RaiseAsync(new UserLoginSuccessEvent(userInfo.UserName, userInfo.Id.ToString(), userInfo.NickName, clientId: context?.Client.ClientId));
 
@@ -212,6 +239,8 @@ namespace OnceMi.IdentityServer4.Controllers
 
         #endregion
 
+        #region 登出
+
         /// <summary>
         /// Show logout page
         /// </summary>
@@ -245,9 +274,28 @@ namespace OnceMi.IdentityServer4.Controllers
             {
                 // delete local authentication cookie
                 await HttpContext.SignOutAsync();
-
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
+                // save login history
+                if (!string.IsNullOrEmpty(User.GetSubjectId()) && long.TryParse(User.GetSubjectId(), out long userId))
+                {
+                    RequestHelper requestHelper = new RequestHelper(HttpContext);
+                    //写登出日志
+                    await _userDbContext.LoginHistory.AddAsync(new LoginHistory()
+                    {
+                        Id = _idGenerator.NewId(),
+                        UserId = userId,
+                        IP = requestHelper.GetRequestIpAddress(),
+                        Browser = requestHelper.GetBrowser(),
+                        Os = requestHelper.GetOSName(),
+                        Device = requestHelper.GetDevice(),
+                        UserAgent = Request.Headers["User-Agent"],
+                        Type = LoginHistoryType.Logout,
+                        Status = true,
+                        Message = "退出登录成功",
+                    });
+                    await _userDbContext.SaveChangesAsync();
+                }
             }
 
             // check if we need to trigger sign-out at an upstream identity provider
@@ -265,12 +313,15 @@ namespace OnceMi.IdentityServer4.Controllers
             return View("LoggedOut", vm);
         }
 
+        #endregion
+
         [HttpGet]
         public IActionResult AccessDenied()
         {
             return View();
         }
 
+        #region Private
 
         /*****************************************/
         /* helper APIs for the AccountController */
@@ -343,7 +394,11 @@ namespace OnceMi.IdentityServer4.Controllers
 
         private async Task<LogoutViewModel> BuildLogoutViewModelAsync(string logoutId)
         {
-            var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
+            var vm = new LogoutViewModel 
+            { 
+                LogoutId = logoutId, 
+                ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt 
+            };
 
             if (User?.Identity.IsAuthenticated != true)
             {
@@ -402,5 +457,8 @@ namespace OnceMi.IdentityServer4.Controllers
 
             return vm;
         }
+
+        #endregion
+
     }
 }

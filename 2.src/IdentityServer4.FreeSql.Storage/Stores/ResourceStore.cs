@@ -8,6 +8,7 @@ using IdentityServer4.Stores;
 using FreeSql;
 using Microsoft.Extensions.Logging;
 using IdentityServer4.FreeSql.Storage.Entities;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace IdentityServer4.FreeSql.Storage.Stores
 {
@@ -28,14 +29,22 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         protected readonly ILogger<ResourceStore> Logger;
 
         /// <summary>
+        /// 缓存
+        /// </summary>
+        private readonly IMemoryCache _cache;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ResourceStore"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">context</exception>
-        public ResourceStore(IConfigurationDbContext context, ILogger<ResourceStore> logger)
+        public ResourceStore(IConfigurationDbContext context
+            , IMemoryCache cache
+            , ILogger<ResourceStore> logger)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             Logger = logger;
         }
 
@@ -49,40 +58,19 @@ namespace IdentityServer4.FreeSql.Storage.Stores
             if (apiResourceNames == null)
                 throw new ArgumentNullException(nameof(apiResourceNames));
 
-            //List<ApiResource> apiResources = await Context.ApiResources.Where(p => apiResourceNames.Contains(p.Name)).ToListAsync();
-            //if(apiResources == null || apiResources.Count == 0)
-            //{
-            //    return new List<Models.ApiResource>();
-            //}
-            //List<long> ids = apiResources.Select(p => p.Id).ToList();
-
-            //var secrets = await Context.ApiResourceSecret.Where(p => ids.Contains(p.ApiResourceId)).ToListAsync();
-            //var scopes = await Context.ApiResourceScope.Where(p => ids.Contains(p.ApiResourceId)).ToListAsync();
-            //var userClaims = await Context.ApiResourceClaim.Where(p => ids.Contains(p.ApiResourceId)).ToListAsync();
-            //var properties = await Context.ApiResourceProperty.Where(p => ids.Contains(p.ApiResourceId)).ToListAsync();
-
-            //foreach(var item in apiResources)
-            //{
-            //    item.Secrets = secrets == null ? new List<ApiResourceSecret>() : secrets.Where(p => p.ApiResourceId == item.Id).ToList();
-            //    item.Scopes = scopes == null ? new List<ApiResourceScope>() : scopes.Where(p => p.ApiResourceId == item.Id).ToList();
-            //    item.UserClaims = userClaims == null ? new List<ApiResourceClaim>() : userClaims.Where(p => p.ApiResourceId == item.Id).ToList();
-            //    item.Properties = properties == null ? new List<ApiResourceProperty>() : properties.Where(p => p.ApiResourceId == item.Id).ToList();
-            //}
-            //var result = apiResources.Select(x => x.ToModel()).ToList();
-
             //var query =
-            //  from apiResource in Context.ApiResources
-            //  where apiResourceNames.Contains(apiResource.Name)
-            //  select apiResource;
+            //    from apiResource in Context.ApiResources
+            //    where apiResourceNames.Contains(apiResource.Name)
+            //    select apiResource;
 
             //var apis = query
-            //    .IncludeMany(x => x.Secrets)
-            //    .IncludeMany(x => x.Scopes)
-            //    .IncludeMany(x => x.UserClaims)
-            //    .IncludeMany(x => x.Properties)
-            //    .NoTracking();
+            //    .Include(x => x.Secrets)
+            //    .Include(x => x.Scopes)
+            //    .Include(x => x.UserClaims)
+            //    .Include(x => x.Properties)
+            //    .AsNoTracking();
 
-            //var result = (await apis.ToListAsync())
+            //var result = (await apis.ToArrayAsync())
             //    .Where(x => apiResourceNames.Contains(x.Name))
             //    .Select(x => x.ToModel()).ToArray();
 
@@ -97,6 +85,14 @@ namespace IdentityServer4.FreeSql.Storage.Stores
                 return new List<Models.ApiResource>();
 
             var result = resources.Select(x => x.ToModel()).ToList();
+            if (result.Any())
+            {
+                Logger.LogDebug("Found {apis} API resource in database", result.Select(x => x.Name));
+            }
+            else
+            {
+                Logger.LogDebug("Did not find {apis} API resource in database", apiResourceNames);
+            }
             return result;
         }
 
@@ -168,28 +164,35 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns></returns>
         public virtual async Task<Models.Resources> GetAllResourcesAsync()
         {
-            var identity = Context.IdentityResources.Select
-                .IncludeMany(x => x.UserClaims.Where(q => q.IdentityResourceId == x.Id))
-                .IncludeMany(x => x.Properties.Where(q => q.IdentityResourceId == x.Id))
-                .NoTracking();
+            var result = await _cache.GetOrCreateAsync($"ONCEMI_IDENTITY_CLIENT_ALLRESOURCES", async (entry) =>
+            {
+                //滑动过期，5分钟
+                entry.SlidingExpiration = TimeSpan.FromMinutes(5);
 
-            var apis = Context.ApiResources.Select
-                .IncludeMany(x => x.Secrets.Where(q => q.ApiResourceId == x.Id))
-                .IncludeMany(x => x.Scopes.Where(q => q.ApiResourceId == x.Id))
-                .IncludeMany(x => x.UserClaims.Where(q => q.ApiResourceId == x.Id))
-                .IncludeMany(x => x.Properties.Where(q => q.ApiResourceId == x.Id))
-                .NoTracking();
+                var identity = Context.IdentityResources.Select
+                    .IncludeMany(x => x.UserClaims.Where(q => q.IdentityResourceId == x.Id))
+                    .IncludeMany(x => x.Properties.Where(q => q.IdentityResourceId == x.Id))
+                    .NoTracking();
 
-            var scopes = Context.ApiScopes.Select
-                .IncludeMany(x => x.UserClaims.Where(q => q.ScopeId == x.Id))
-                .IncludeMany(x => x.Properties.Where(q => q.ScopeId == x.Id))
-                .NoTracking();
+                var apis = Context.ApiResources.Select
+                    .IncludeMany(x => x.Secrets.Where(q => q.ApiResourceId == x.Id))
+                    .IncludeMany(x => x.Scopes.Where(q => q.ApiResourceId == x.Id))
+                    .IncludeMany(x => x.UserClaims.Where(q => q.ApiResourceId == x.Id))
+                    .IncludeMany(x => x.Properties.Where(q => q.ApiResourceId == x.Id))
+                    .NoTracking();
 
-            var result = new Models.Resources(
-                (await identity.ToListAsync()).Select(x => x.ToModel()),
-                (await apis.ToListAsync()).Select(x => x.ToModel()),
-                (await scopes.ToListAsync()).Select(x => x.ToModel())
-            );
+                var scopes = Context.ApiScopes.Select
+                    .IncludeMany(x => x.UserClaims.Where(q => q.ScopeId == x.Id))
+                    .IncludeMany(x => x.Properties.Where(q => q.ScopeId == x.Id))
+                    .NoTracking();
+
+                var result = new Models.Resources(
+                    (await identity.ToListAsync()).Select(x => x.ToModel()),
+                    (await apis.ToListAsync()).Select(x => x.ToModel()),
+                    (await scopes.ToListAsync()).Select(x => x.ToModel())
+                );
+                return result;
+            });
             return result;
         }
     }

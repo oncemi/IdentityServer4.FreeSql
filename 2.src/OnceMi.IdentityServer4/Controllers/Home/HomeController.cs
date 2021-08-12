@@ -3,6 +3,7 @@
 
 
 using IdentityServer4.Extensions;
+using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +42,6 @@ namespace OnceMi.IdentityServer4.Controllers
         public async Task<IActionResult> Error(string errorId)
         {
             var vm = new ErrorViewModel();
-
             // retrieve error details from identityserver
             var message = await _interaction.GetErrorContextAsync(errorId);
             if (message != null)

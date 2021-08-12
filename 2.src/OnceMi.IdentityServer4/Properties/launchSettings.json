@@ -24,7 +24,7 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "https://localhost:5003"
+      "applicationUrl": "https://localhost:50010;http://localhost:50011"
     }
   }
 }

@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4" Version="4.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\IdentityServer4.FreeSql.Storage\IdentityServer4.FreeSql.Storage.csproj" />
   </ItemGroup>
 

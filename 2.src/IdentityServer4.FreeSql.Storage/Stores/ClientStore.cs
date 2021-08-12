@@ -25,15 +25,22 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         protected readonly ILogger<ClientStore> _logger;
 
         /// <summary>
+        /// 缓存
+        /// </summary>
+        private readonly IMemoryCache _cache;
+
+        /// <summary>
         /// 初始化一个 <参阅 cref="ClientStore"/> 类的新实例.
         /// </summary>
         /// <param name="context">数据库上下文</param>
         /// <param name="logger">日志</param>
         /// <exception cref="ArgumentNullException">context</exception>
         public ClientStore(IConfigurationDbContext context
+            , IMemoryCache cache
             , ILogger<ClientStore> logger)
         {
             Context = context ?? throw new ArgumentNullException(paramName: nameof(context));
+            _cache = cache ?? throw new ArgumentNullException(paramName: nameof(cache));
             _logger = logger;
         }
 
@@ -44,20 +51,37 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns>客户端</returns>
         public virtual async Task<Client> FindClientByIdAsync(string clientId)
         {
-            Entities.Client client = await Context.Clients
-                .Where(p => p.ClientId == clientId)
-                .IncludeMany(c => c.AllowedCorsOrigins.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.AllowedGrantTypes.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.AllowedScopes.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.Claims.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.ClientSecrets.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.IdentityProviderRestrictions.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.PostLogoutRedirectUris.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.Properties.Where(p => p.ClientId == c.Id))
-                .IncludeMany(c => c.RedirectUris.Where(p => p.ClientId == c.Id))
-                .ToOneAsync();
-            var model = client.ToModel();
-            _logger.LogInformation($"Query client bu clientId '{clientId}' successed. ");
+            //使用缓存
+            var model = await _cache.GetOrCreateAsync($"ONCEMI_IDENTITY_CLIENT_{clientId}", async (entry) =>
+             {
+                 //滑动过期，1分钟
+                 entry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                 //get client
+                 Entities.Client client = await Context.Clients
+                      .Where(p => p.ClientId == clientId)
+                      .IncludeMany(c => c.AllowedCorsOrigins.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.AllowedGrantTypes.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.AllowedScopes.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.Claims.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.ClientSecrets.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.IdentityProviderRestrictions.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.PostLogoutRedirectUris.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.Properties.Where(p => p.ClientId == c.Id))
+                      .IncludeMany(c => c.RedirectUris.Where(p => p.ClientId == c.Id))
+                      .ToOneAsync();
+                 if (client == null)
+                     return null;
+                 var model = client.ToModel();
+                 return model;
+             });
+            if (model == null)
+            {
+                _logger.LogWarning($"Query client by clientId '{clientId}' failed. ");
+            }
+            else
+            {
+                _logger.LogInformation($"Query client by clientId '{clientId}' successed. ");
+            }
             return model;
         }
     }

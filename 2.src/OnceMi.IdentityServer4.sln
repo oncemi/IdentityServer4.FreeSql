@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.FreeSql", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.FreeSql.Storage", "IdentityServer4.FreeSql.Storage\IdentityServer4.FreeSql.Storage.csproj", "{6B2FD53A-C376-47D5-A631-7647C473286C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnceMi.IdentityServer4.User", "OnceMi.IdentityServer4.User\OnceMi.IdentityServer4.User.csproj", "{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnceMi.IdentityServer4.User", "OnceMi.IdentityServer4.User\OnceMi.IdentityServer4.User.csproj", "{9D021853-B99C-4A33-8EC3-E4F9BF8F4D77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

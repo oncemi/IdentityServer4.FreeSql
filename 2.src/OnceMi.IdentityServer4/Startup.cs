@@ -50,12 +50,15 @@ namespace OnceMi.IdentityServer4
 
             services.AddIdGenerator(x =>
             {
-                x.AppId = 128;   //Between 1-1023
+                x.AppId = Configuration.GetValue<ushort>("AppSettings:AppId");
             });
 
             #endregion
 
             services.AddIdentityServerWithFreeSql();
+
+            services.AddHttpContextAccessor();
+
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>
             {

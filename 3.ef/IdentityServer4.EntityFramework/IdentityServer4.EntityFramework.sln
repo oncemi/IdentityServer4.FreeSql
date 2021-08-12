@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.EntityFrame
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{954C3011-22B4-4B48-A54A-D6CAA37D68BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.AspNetIdentity", "IdentityServer4.AspNetIdentity\IdentityServer4.AspNetIdentity.csproj", "{10D6CD1E-E3D4-4798-A472-65131D074D22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.AspNetIdentity", "IdentityServer4.AspNetIdentity\IdentityServer4.AspNetIdentity.csproj", "{10D6CD1E-E3D4-4798-A472-65131D074D22}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4", "IdentityServer4\IdentityServer4.csproj", "{EEC52BDA-F63E-46A3-8749-3A4328452C02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{10D6CD1E-E3D4-4798-A472-65131D074D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10D6CD1E-E3D4-4798-A472-65131D074D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10D6CD1E-E3D4-4798-A472-65131D074D22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEC52BDA-F63E-46A3-8749-3A4328452C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC52BDA-F63E-46A3-8749-3A4328452C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC52BDA-F63E-46A3-8749-3A4328452C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC52BDA-F63E-46A3-8749-3A4328452C02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 		{858E449B-0E94-4539-A92B-11D2F1281663} = {954C3011-22B4-4B48-A54A-D6CAA37D68BD}
 		{2FC69D07-8592-44FB-AFAF-99C5775B57DC} = {954C3011-22B4-4B48-A54A-D6CAA37D68BD}
 		{10D6CD1E-E3D4-4798-A472-65131D074D22} = {954C3011-22B4-4B48-A54A-D6CAA37D68BD}
+		{EEC52BDA-F63E-46A3-8749-3A4328452C02} = {954C3011-22B4-4B48-A54A-D6CAA37D68BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AD1808F-5E47-4C64-9347-6B6CCCE06798}

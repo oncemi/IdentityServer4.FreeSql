@@ -2,6 +2,7 @@
 using IdentityModel;
 using IdentityServer4.FreeSql.Storage.DbContexts;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -32,7 +33,7 @@ namespace OnceMi.IdentityServer4.Extensions
                 }
                 //get datatype
                 DataType dbType = configuration.GetValue<DataType>("DbConnectionString:DbType");
-                if(dbType == DataType.Sqlite)
+                if (dbType == DataType.Sqlite)
                 {
                     connectionString = FreeSqlExtension.GetSqliteConnectString(connectionString);
                 }
@@ -120,5 +121,6 @@ namespace OnceMi.IdentityServer4.Extensions
 
             return builder;
         }
+
     }
 }

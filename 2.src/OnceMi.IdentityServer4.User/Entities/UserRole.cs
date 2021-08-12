@@ -10,10 +10,10 @@ namespace OnceMi.IdentityServer4.User.Entities
         [Column(IsNullable = false)]
         public long RoleId { get; set; }
 
-        [Navigate(nameof(Roles.Id))]
+        [Navigate(nameof(RoleId))]
         public Roles Role { get; set; }
 
-        [Navigate(nameof(Users.Id))]
+        [Navigate(nameof(UserId))]
         public Users User { get; set; }
     }
 }

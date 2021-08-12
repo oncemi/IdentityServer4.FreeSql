@@ -1,15 +1,16 @@
-﻿using IdentityServer4.FreeSql.Storage.Interfaces;
+﻿using IdentityModel;
+using IdentityServer4;
+using IdentityServer4.FreeSql.Storage.Entities;
+using IdentityServer4.FreeSql.Storage.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OnceMi.AspNetCore.IdGenerator;
-using OnceMi.IdentityServer4.Extensions.Utils;
-using OnceMi.IdentityServer4.Models;
 using OnceMi.IdentityServer4.User;
-using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OnceMi.IdentityServer4.Extensions
 {
@@ -17,6 +18,11 @@ namespace OnceMi.IdentityServer4.Extensions
     {
         public static IApplicationBuilder UseInitializeDatabase(this IApplicationBuilder app)
         {
+            IWebHostEnvironment env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
+            if (!env.IsDevelopment())
+            {
+                return app;
+            }
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 ILogger logger = scope.ServiceProvider.GetRequiredService<ILogger<Startup>>();
@@ -27,78 +33,408 @@ namespace OnceMi.IdentityServer4.Extensions
 
                 logger.LogInformation("Start seed database...");
 
-                #region user
-                string initDataPath = Path.Combine(AppContext.BaseDirectory, "testdata.json");
-                if (!File.Exists(initDataPath))
-                {
-                    logger.LogWarning("初始化数据不存在，跳过数据初始化。");
-                }
-                TestUserData testData = JsonUtil.DeserializeStringToObject<TestUserData>(File.ReadAllText(initDataPath));
-                if (!userDbContext.Roles.Select.Any() && testData.Roles != null)
-                {
-                    logger.LogInformation("初始化角色信息...");
-
-                    foreach(var item in testData.Roles)
-                    {
-                        item.CreatedTime = DateTime.Now;
-                    }
-                    userDbContext.Roles.AddRange(testData.Roles);
-                }
-
-                if (!userDbContext.Users.Select.Any() && testData.Users != null)
-                {
-                    logger.LogInformation("初始化用户信息...");
-
-                    foreach (var item in testData.Users)
-                    {
-                        //用户角色
-                        if (item.UserRoles != null && item.UserRoles.Count > 0)
-                        {
-                            foreach(var q in item.UserRoles)
-                            {
-                                q.CreatedTime = DateTime.Now;
-                                userDbContext.UserRole.Add(q);
-                            }
-                        }
-                        item.Password = item.Create(SHA256(item.Password));
-                        userDbContext.Users.Add(item);
-                    }
-                }
-
-                userDbContext.SaveChanges();
-
-                #endregion
-
                 #region client
 
-                if(!configurationDbContext.IdentityResources.Select.Any() && testData.Resources != null)
+                List<IdentityResource> resources = new List<IdentityResource>()
                 {
-                    logger.LogInformation("初始化IdentityResources信息...");
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = JwtClaimTypes.Role,
+                        Enabled = true,
+                        Required = false,
+                        DisplayName = "角色信息",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Role,
+                            }
+                        }
+                    },
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = OrganizeJwtClaimType.Organize,
+                        Enabled = true,
+                        Required = false,
+                        DisplayName = "组织信息",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = OrganizeJwtClaimType.Organize,
+                            }
+                        }
+                    },
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = IdentityServerConstants.StandardScopes.OpenId,
+                        Enabled = true,
+                        Required = true,
+                        DisplayName = "用户Id",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Subject,
+                            }
+                        }
+                    },
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = IdentityServerConstants.StandardScopes.Profile,
+                        Enabled = true,
+                        Required = true,
+                        DisplayName = "基本信息",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Name,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.FamilyName,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.GivenName,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.MiddleName,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.NickName,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.PreferredUserName,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Profile,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Picture,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Gender,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.WebSite,
+                            }
+                        }
+                    },
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = IdentityServerConstants.StandardScopes.Email,
+                        Enabled = true,
+                        Required = false,
+                        DisplayName = "邮箱",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Email,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.EmailVerified,
+                            }
+                        }
+                    },
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = IdentityServerConstants.StandardScopes.Address,
+                        Enabled = true,
+                        Required = false,
+                        DisplayName = "地址",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Address,
+                            }
+                        }
+                    },
+                    new IdentityResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = IdentityServerConstants.StandardScopes.Phone,
+                        Enabled = true,
+                        Required = false,
+                        DisplayName = "电话号码",
+                        UserClaims = new List<IdentityResourceClaim>()
+                        {
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.PhoneNumber,
+                            },
+                            new IdentityResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.PhoneNumberVerified,
+                            }
+                        }
+                    },
+                };
 
-                    foreach (var item in testData.Resources)
+                List<ApiScope> apiScopes = new List<ApiScope>()
+                {
+                    new ApiScope()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = "api1",
+                        DisplayName = "api1",
+                        UserClaims = new List<ApiScopeClaim>(),
+                    },
+                    new ApiScope()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = "client_management",
+                        DisplayName = "client_management",
+                        UserClaims = new List<ApiScopeClaim>(),
+                    },
+                };
+
+                List<ApiResource> apiResources = new List<ApiResource>()
+                {
+                    new ApiResource()
+                    {
+                        Id = idGenerator.NewId(),
+                        Name = "api1",
+                        DisplayName = "api1",
+                        Scopes = new List<ApiResourceScope>()
+                        {
+                            new ApiResourceScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = apiScopes.Where(p=>p.DisplayName == "api1").FirstOrDefault()?.Name
+                            }
+                        },
+                        UserClaims = new List<ApiResourceClaim>()
+                        {
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Subject,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Profile,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Picture,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Name,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.NickName,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Role,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = OrganizeJwtClaimType.Organize,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.Email,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.EmailVerified,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.PhoneNumber,
+                            },
+                            new ApiResourceClaim()
+                            {
+                                Id = idGenerator.NewId(),
+                                Type = JwtClaimTypes.PhoneNumberVerified,
+                            },
+                        }
+                    }
+                };
+
+                List<Client> clients = new List<Client>()
+                {
+                    new Client()
+                    {
+                        Id = idGenerator.NewId(),
+                        ClientId = "5954398486",
+                        ClientName = "后台管理系统Vue客户端",
+                        ClientUri = "",
+                        RequireClientSecret = false,
+                        RequireConsent = true,
+                        AllowRememberConsent = true,
+                        AllowPlainTextPkce = false,
+                        AllowAccessTokensViaBrowser = true,
+                        BackChannelLogoutSessionRequired = true,
+                        AllowOfflineAccess = true,
+                        UpdateAccessTokenClaimsOnRefresh = true,
+                        AccessTokenType = 0,
+                        AllowedCorsOrigins = new List<ClientCorsOrigin>()
+                        {
+                            new ClientCorsOrigin()
+                            {
+                                Id = idGenerator.NewId(),
+                                Origin = "http://localhost:8080",
+                            }
+                        },
+                        AllowedGrantTypes = new List<ClientGrantType>()
+                        {
+                            new ClientGrantType()
+                            {
+                                Id = idGenerator.NewId(),
+                                GrantType = "authorization_code",
+                            }
+                        },
+                        RequirePkce = true,
+                        ClientSecrets = new List<ClientSecret>()
+                        {
+                            new ClientSecret()
+                            {
+                                Id = idGenerator.NewId(),
+                                Value = "oYjppIizd29W4eodalgf+Vry0MfyLunBPVZeFmOelvU="
+                            }
+                        },
+                        RedirectUris = new List<ClientRedirectUri>()
+                        {
+                            new ClientRedirectUri()
+                            {
+                                Id = idGenerator.NewId(),
+                                RedirectUri = "http://localhost:8080/#/callback"
+                            },
+                            new ClientRedirectUri()
+                            {
+                                Id = idGenerator.NewId(),
+                                RedirectUri = "http://localhost:8080/#/refresh"
+                            }
+                        },
+                        FrontChannelLogoutUri = "http://localhost:8080",
+                        PostLogoutRedirectUris = new List<ClientPostLogoutRedirectUri>()
+                        {
+                            new ClientPostLogoutRedirectUri()
+                            {
+                                Id = idGenerator.NewId(),
+                                PostLogoutRedirectUri = "http://localhost:8080",
+                            }
+                        },
+                        AllowedScopes = new List<ClientScope>()
+                        {
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = JwtClaimTypes.Subject,
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = "openid",
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = JwtClaimTypes.Email,
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = JwtClaimTypes.PhoneNumber,
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = JwtClaimTypes.Profile,
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = JwtClaimTypes.Role,
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = OrganizeJwtClaimType.Organize,
+                            },
+                            new ClientScope()
+                            {
+                                Id = idGenerator.NewId(),
+                                Scope = "api1",
+                            },
+                        }
+                    }
+                };
+
+                if (configurationDbContext.IdentityResources.Select.Count() == 0)
+                {
+                    foreach (var item in resources)
                     {
                         if (item.UserClaims != null && item.UserClaims.Count > 0)
                         {
                             foreach (var q in item.UserClaims)
                             {
+                                q.IdentityResourceId = item.Id;
                                 configurationDbContext.IdentityResourceClaims.Add(q);
                             }
                         }
-                        item.Created = DateTime.Now;
                         configurationDbContext.IdentityResources.Add(item);
                     }
                 }
 
-                if (!configurationDbContext.ApiScopes.Select.Any() && testData.ApiScopes != null)
+                if (configurationDbContext.ApiScopes.Select.Count() == 0)
                 {
-                    logger.LogInformation("初始化ApiScopes信息...");
-
-                    foreach (var item in testData.ApiScopes)
+                    foreach (var item in apiScopes)
                     {
                         if (item.UserClaims != null && item.UserClaims.Count > 0)
                         {
                             foreach (var q in item.UserClaims)
                             {
+                                q.ScopeId = item.Id;
                                 configurationDbContext.ApiScopeClaims.Add(q);
                             }
                         }
@@ -106,16 +442,15 @@ namespace OnceMi.IdentityServer4.Extensions
                     }
                 }
 
-                if (!configurationDbContext.ApiResources.Select.Any() && testData.ApiResources != null)
+                if (configurationDbContext.ApiResources.Select.Count() == 0)
                 {
-                    logger.LogInformation("初始化ApiResources信息...");
-
-                    foreach (var item in testData.ApiResources)
+                    foreach (var item in apiResources)
                     {
                         if (item.Scopes != null && item.Scopes.Count > 0)
                         {
                             foreach (var q in item.Scopes)
                             {
+                                q.ApiResourceId = item.Id;
                                 configurationDbContext.ApiResourceScopes.Add(q);
                             }
                         }
@@ -123,24 +458,25 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             foreach (var q in item.UserClaims)
                             {
+                                q.ApiResourceId = item.Id;
                                 configurationDbContext.ApiResourceClaims.Add(q);
                             }
                         }
-                        item.Created = DateTime.Now;
                         configurationDbContext.ApiResources.Add(item);
                     }
                 }
 
-                if (!configurationDbContext.Clients.Select.Any() && testData.Clients != null)
+                if (configurationDbContext.Clients.Select.Count() == 0)
                 {
                     logger.LogInformation("初始化客户端信息...");
 
-                    foreach (var item in testData.Clients)
+                    foreach (var item in clients)
                     {
                         if (item.AllowedGrantTypes != null && item.AllowedGrantTypes.Count > 0)
                         {
                             foreach (var q in item.AllowedGrantTypes)
                             {
+                                q.ClientId = item.Id;
                                 configurationDbContext.ClientGrantTypes.Add(q);
                             }
                         }
@@ -148,6 +484,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             foreach (var q in item.ClientSecrets)
                             {
+                                q.ClientId = item.Id;
                                 configurationDbContext.ClientSecrets.Add(q);
                             }
                         }
@@ -155,17 +492,34 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             foreach (var q in item.RedirectUris)
                             {
+                                q.ClientId = item.Id;
                                 configurationDbContext.ClientRedirectUris.Add(q);
+                            }
+                        }
+                        if (item.PostLogoutRedirectUris != null && item.PostLogoutRedirectUris.Count > 0)
+                        {
+                            foreach (var q in item.PostLogoutRedirectUris)
+                            {
+                                q.ClientId = item.Id;
+                                configurationDbContext.ClientPostLogoutRedirectUris.Add(q);
+                            }
+                        }
+                        if (item.AllowedCorsOrigins != null && item.AllowedCorsOrigins.Count > 0)
+                        {
+                            foreach (var q in item.AllowedCorsOrigins)
+                            {
+                                q.ClientId = item.Id;
+                                configurationDbContext.ClientCorsOrigins.Add(q);
                             }
                         }
                         if (item.AllowedScopes != null && item.AllowedScopes.Count > 0)
                         {
                             foreach (var q in item.AllowedScopes)
                             {
+                                q.ClientId = item.Id;
                                 configurationDbContext.ClientScopes.Add(q);
                             }
                         }
-                        item.Created = DateTime.Now;
                         configurationDbContext.Clients.Add(item);
                     }
                 }
@@ -173,22 +527,12 @@ namespace OnceMi.IdentityServer4.Extensions
                 configurationDbContext.SaveChanges();
 
                 #endregion
+
+                //configurationDbContext.SaveChanges();
+
+                //#endregion
             }
             return app;
-        }
-
-        private static string SHA256(string data)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(data);
-            byte[] hash = System.Security.Cryptography.SHA256.Create().ComputeHash(bytes);
-
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                builder.Append(hash[i].ToString("X2"));
-            }
-
-            return builder.ToString().ToLower();
         }
     }
 }

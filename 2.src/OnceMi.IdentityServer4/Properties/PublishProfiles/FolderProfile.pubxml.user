@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>D:\Projects\oncemi_identityserver4\2.src\OnceMi.IdentityServer4\bin\Release\publish\</_PublishTargetUrl>
-    <History>True|2021-06-08T10:38:51.5073099Z;True|2021-06-08T18:28:35.4200825+08:00;True|2021-06-08T18:24:04.8083527+08:00;True|2021-06-08T18:10:54.1100836+08:00;</History>
+    <_PublishTargetUrl>G:\Projects\oncemi_identityserver4\2.src\OnceMi.IdentityServer4\bin\Release\publish\</_PublishTargetUrl>
+    <History>True|2021-08-11T14:42:45.4925631Z;True|2021-08-11T22:42:14.4733015+08:00;True|2021-08-10T21:58:46.8172571+08:00;True|2021-08-02T19:54:29.5456072+08:00;True|2021-07-25T22:08:25.4935758+08:00;True|2021-07-12T23:37:22.3226455+08:00;True|2021-07-10T00:14:11.4084892+08:00;True|2021-06-17T17:47:41.8092108+08:00;True|2021-06-17T17:46:57.0381804+08:00;True|2021-06-08T18:38:51.5073099+08:00;True|2021-06-08T18:28:35.4200825+08:00;True|2021-06-08T18:24:04.8083527+08:00;True|2021-06-08T18:10:54.1100836+08:00;</History>
   </PropertyGroup>
 </Project>

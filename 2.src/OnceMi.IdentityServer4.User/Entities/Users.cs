@@ -23,7 +23,7 @@ namespace OnceMi.IdentityServer4.User.Entities
         /// <summary>
         /// 头像
         /// </summary>
-        [Column(StringLength = 100, IsNullable = true)]
+        [Column(DbType = "text", IsNullable = true)]
         public string Avatar { get; set; }
 
         /// <summary>
@@ -89,7 +89,36 @@ namespace OnceMi.IdentityServer4.User.Entities
         [Column(IsNullable = true)]
         public long? ProviderId { get; set; }
 
-        [Navigate(nameof(UserRole.UserId))]
-        public List<UserRole> UserRoles { get; set; }
+        /// <summary>
+        /// 用户Token
+        /// </summary>
+        [Navigate(nameof(Entities.UserToken.UserId))]
+        public UserToken UserToken { get; set; }
+
+        /// <summary>
+        /// 所属角色
+        /// 通过导航关系配置
+        /// </summary>
+        [Navigate(ManyToMany = typeof(UserRole))]
+        public List<Roles> Roles { get; set; }
+
+        /// <summary>
+        /// 所属组织
+        /// 通过导航关系配置
+        /// </summary>
+        [Navigate(ManyToMany = typeof(UserOrganize))]
+        public List<Organizes> Organizes { get; set; }
+
+        /// <summary>
+        /// 创建用户
+        /// </summary>
+        [Navigate(nameof(CreatedUserId))]
+        public Users CreateUser { get; set; }
+
+        /// <summary>
+        /// 更新用户
+        /// </summary>
+        [Navigate(nameof(UpdatedUserId))]
+        public Users UpdateUser { get; set; }
     }
 }

@@ -57,7 +57,6 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         public virtual async Task StoreDeviceAuthorizationAsync(string deviceCode, string userCode, DeviceCode data)
         {
             Context.DeviceFlowCodes.Add(ToEntity(data, deviceCode, userCode));
-
             await Context.SaveChangesAsync();
         }
 
@@ -69,7 +68,10 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         public virtual async Task<DeviceCode> FindByUserCodeAsync(string userCode)
         {
             // ef AsNoTracking(), FirstOrDefaultAsync()
-            var deviceFlowCodes = await Context.DeviceFlowCodes.Where(x => x.UserCode == userCode).ToOneAsync();
+            var deviceFlowCodes = await Context.DeviceFlowCodes
+                .Where(x => x.UserCode == userCode)
+                .NoTracking()
+                .FirstAsync();
             var model = ToModel(deviceFlowCodes?.Data);
 
             Logger.LogDebug("{userCode} found in database: {userCodeFound}", userCode, model != null);
@@ -84,7 +86,10 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns></returns>
         public virtual async Task<DeviceCode> FindByDeviceCodeAsync(string deviceCode)
         {
-            var deviceFlowCodes = await Context.DeviceFlowCodes.Where(x => x.DeviceCode == deviceCode).ToOneAsync();
+            var deviceFlowCodes = await Context.DeviceFlowCodes
+                .Where(x => x.DeviceCode == deviceCode)
+                .NoTracking()
+                .ToOneAsync();
             var model = ToModel(deviceFlowCodes?.Data);
 
             Logger.LogDebug("{deviceCode} found in database: {deviceCodeFound}", deviceCode, model != null);
@@ -100,7 +105,9 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns></returns>
         public virtual async Task UpdateByUserCodeAsync(string userCode, DeviceCode data)
         {
-            var existing = await Context.DeviceFlowCodes.Where(x => x.UserCode == userCode).ToOneAsync();
+            var existing = await Context.DeviceFlowCodes
+                .Where(x => x.UserCode == userCode)
+                .ToOneAsync();
             if (existing == null)
             {
                 Logger.LogError("{userCode} not found in database", userCode);
@@ -130,7 +137,9 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns></returns>
         public virtual async Task RemoveByDeviceCodeAsync(string deviceCode)
         {
-            var deviceFlowCodes = await Context.DeviceFlowCodes.Where(x => x.DeviceCode == deviceCode).ToOneAsync();
+            var deviceFlowCodes = await Context.DeviceFlowCodes
+                .Where(x => x.DeviceCode == deviceCode)
+                .ToOneAsync();
             if (deviceFlowCodes != null)
             {
                 Logger.LogDebug("removing {deviceCode} device code from database", deviceCode);
@@ -183,8 +192,8 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns></returns>
         protected DeviceCode ToModel(string entity)
         {
-            if (entity == null) return null;
-
+            if (entity == null) 
+                return null;
             return Serializer.Deserialize<DeviceCode>(entity);
         }
     }

@@ -40,17 +40,19 @@ namespace OnceMi.IdentityServer4.Extensions
             var sub = context.Subject?.GetSubjectId();
             if (string.IsNullOrEmpty(sub))
                 return;
-            var user = await _userDbContext.Users.Where(p => p.Id.ToString() == sub && p.Status == UserStatus.Enable).FirstAsync();
+            var user = await _userDbContext.Users.Where(p => p.Id.ToString() == sub && p.Status == UserStatus.Enable && !p.IsDeleted).FirstAsync();
             if (user == null)
                 return;
-            List<Claim> claims = new List<Claim>();
             //get all request
-            List<string> requestClaims = RequestClaims(context);
-
+            List<string> requestClaims = RequestClaims(context)?.Distinct().ToList();
+            if(requestClaims == null || requestClaims.Count == 0)
+                return;
+            List<Claim> claims = new List<Claim>();
             foreach (var item in requestClaims)
             {
                 switch (item)
                 {
+                    case JwtClaimTypes.Id:
                     case JwtClaimTypes.Subject:
                         {
                             claims.Add(new Claim(item, user.Id.ToString()));
@@ -68,13 +70,28 @@ namespace OnceMi.IdentityServer4.Extensions
                         break;
                     case JwtClaimTypes.Role:
                         {
-                            List<Roles> roles = await _userDbContext.Roles.Where(p => p.UserRoles.AsSelect().Any(x => x.UserId.ToString() == sub)).ToListAsync();
+                            List<Roles> roles = await _userDbContext.Roles
+                                .Where(p => !p.IsDeleted && p.IsEnabled && p.Users.AsSelect().Any(x => x.Id.ToString() == sub))
+                                .ToListAsync();
                             if (roles != null && roles.Count > 0)
                             {
                                 foreach (var role in roles)
                                 {
-                                    if (string.IsNullOrEmpty(role.Name)) continue;
-                                    claims.Add(new Claim(item, role.Name));
+                                    claims.Add(new Claim(item, role.Id.ToString()));
+                                }
+                            }
+                        }
+                        break;
+                    case OrganizeJwtClaimType.Organize:
+                        {
+                            List<Organizes> organizes = await _userDbContext.Organizes
+                                .Where(p => !p.IsDeleted && p.IsEnabled && p.Users.AsSelect().Any(x => x.Id.ToString() == sub))
+                                .ToListAsync();
+                            if (organizes != null && organizes.Count > 0)
+                            {
+                                foreach (var organize in organizes)
+                                {
+                                    claims.Add(new Claim(item, organize.Id.ToString()));
                                 }
                             }
                         }
@@ -82,26 +99,34 @@ namespace OnceMi.IdentityServer4.Extensions
                     case JwtClaimTypes.Email:
                         {
                             claims.Add(new Claim(item, user.Email));
-                            claims.Add(new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed.ToString()));
+                            claims.Add(new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed.ToString().ToLower()));
                         }
                         break;
                     case JwtClaimTypes.PhoneNumber:
                         {
                             claims.Add(new Claim(item, user.PhoneNumber));
-                            claims.Add(new Claim(JwtClaimTypes.PhoneNumberVerified, user.PhoneNumberConfirmed.ToString()));
+                            claims.Add(new Claim(JwtClaimTypes.PhoneNumberVerified, user.PhoneNumberConfirmed.ToString().ToLower()));
                         }
                         break;
-                    default:
+                    case JwtClaimTypes.Address:
                         {
-
+                            claims.Add(new Claim(item, user.Address));
+                        }
+                        break;
+                    case JwtClaimTypes.Picture:
+                        {
+                            claims.Add(new Claim(item, user.Avatar ?? ""));
+                        }
+                        break;
+                    case JwtClaimTypes.Gender:
+                        {
+                            claims.Add(new Claim(item, user.Gender.ToString() ?? ""));
                         }
                         break;
                 }
             }
-
             //可以添加自定义用户信息
             //claims.Add(new Claim("custum", "testvalue"));
-
             context.AddRequestedClaims(claims);
         }
 
@@ -112,13 +137,15 @@ namespace OnceMi.IdentityServer4.Extensions
         /// <returns></returns>
         public virtual async Task IsActiveAsync(IsActiveContext context)
         {
-            _logger.LogDebug("用户是否有效：{caller}", context.Caller);
+            _logger.LogDebug("验证用户是否有效：{caller}", context.Caller);
 
             var sub = context.Subject?.GetSubjectId();
             if (sub == null)
                 throw new Exception("获取用户信息失败，用户Id为空");
 
-            var user = await _userDbContext.Users.Where(p => p.Id.ToString() == sub && p.Status == UserStatus.Enable).FirstAsync();
+            var user = await _userDbContext.Users
+                .Where(p => p.Id.ToString() == sub && p.Status == UserStatus.Enable && !p.IsDeleted)
+                .FirstAsync();
             context.IsActive = user != null;
         }
 
@@ -134,11 +161,11 @@ namespace OnceMi.IdentityServer4.Extensions
             List<string> result = new List<string>();
 
             //userinfo request
-            if(_httpContext.HttpContext.Request.Path.Value?.ToLower().StartsWith("/connect/userinfo") == true)
+            if (_httpContext.HttpContext.Request.Path.Value?.ToLower().StartsWith("/connect/userinfo") == true)
             {
                 var userClaims = context.Subject.Claims?
-                    .GroupBy(p=>p.Type)
-                    .Select(q=>q.Key).ToList();
+                    .GroupBy(p => p.Type)
+                    .Select(q => q.Key).ToList();
                 result.AddRange(userClaims);
             }
             if (context.RequestedResources.Resources.ApiResources == null
@@ -146,6 +173,7 @@ namespace OnceMi.IdentityServer4.Extensions
             {
                 return result;
             }
+            //从允许的认证资源中取出允许的UserClaims
             foreach (var pItem in context.RequestedResources.Resources.IdentityResources)
             {
                 //判断资源是否在请求的资源中
@@ -160,6 +188,7 @@ namespace OnceMi.IdentityServer4.Extensions
                     allowClaims.Add(item);
                 }
             }
+            //在ApiResources中包含的UserClaims，且在允许的UserClaims中
             foreach (var pItem in context.RequestedResources.Resources.ApiResources)
             {
                 if (pItem.UserClaims == null || pItem.UserClaims.Count == 0)
@@ -173,6 +202,7 @@ namespace OnceMi.IdentityServer4.Extensions
                     result.Add(item);
                 }
             }
+            //在ApiScopes中包含的UserClaims，且在允许的UserClaims中
             foreach (var pItem in context.RequestedResources.Resources.ApiScopes)
             {
                 if (pItem.UserClaims == null || pItem.UserClaims.Count == 0)
@@ -185,6 +215,15 @@ namespace OnceMi.IdentityServer4.Extensions
                         continue;
                     result.Add(item);
                 }
+            }
+            //如果请求包含了Profile，则将Profile包含的ClaimType添加到result中
+            if (allowClaims.Any(p => p == JwtClaimTypes.Profile
+            || result.Any(p => p == JwtClaimTypes.Profile)))
+            {
+                if (!result.Contains(JwtClaimTypes.Picture))
+                    result.Add(JwtClaimTypes.Picture);
+                if (!result.Contains(JwtClaimTypes.Gender))
+                    result.Add(JwtClaimTypes.Gender);
             }
             return result;
         }

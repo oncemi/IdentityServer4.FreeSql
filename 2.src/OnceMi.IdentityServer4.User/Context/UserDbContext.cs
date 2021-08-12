@@ -26,6 +26,12 @@ namespace OnceMi.IdentityServer4.User
 
         public DbSet<LoginHistory> LoginHistory { get; set; }
 
+        public DbSet<Organizes> Organizes { get; set; }
+
+        public DbSet<OrganizeManagers> OrganizeManagers { get; set; }
+
+        public DbSet<UserOrganize> UserOrganize { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseFreeSql(orm: _freeSql);
