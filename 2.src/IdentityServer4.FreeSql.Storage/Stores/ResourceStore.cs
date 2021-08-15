@@ -9,6 +9,7 @@ using FreeSql;
 using Microsoft.Extensions.Logging;
 using IdentityServer4.FreeSql.Storage.Entities;
 using Microsoft.Extensions.Caching.Memory;
+using IdentityServer4.FreeSql.Storage.Options;
 
 namespace IdentityServer4.FreeSql.Storage.Stores
 {
@@ -164,7 +165,7 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         /// <returns></returns>
         public virtual async Task<Models.Resources> GetAllResourcesAsync()
         {
-            var result = await _cache.GetOrCreateAsync($"ONCEMI_IDENTITY_CLIENT_ALLRESOURCES", async (entry) =>
+            var result = await _cache.GetOrCreateAsync(StorageCaches.CLIENT_ALLRESOURCES, async (entry) =>
             {
                 //滑动过期，5分钟
                 entry.SlidingExpiration = TimeSpan.FromMinutes(5);
