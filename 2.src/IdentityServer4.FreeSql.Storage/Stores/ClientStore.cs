@@ -1,6 +1,7 @@
 ﻿using FreeSql;
 using IdentityServer4.FreeSql.Storage.Interfaces;
 using IdentityServer4.FreeSql.Storage.Mappers;
+using IdentityServer4.FreeSql.Storage.Options;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Caching.Memory;
@@ -52,10 +53,10 @@ namespace IdentityServer4.FreeSql.Storage.Stores
         public virtual async Task<Client> FindClientByIdAsync(string clientId)
         {
             //使用缓存
-            var model = await _cache.GetOrCreateAsync($"ONCEMI_IDENTITY_CLIENT_{clientId}", async (entry) =>
+            var model = await _cache.GetOrCreateAsync(StorageCaches.GetClientCacheKey(clientId), async (entry) =>
              {
-                 //滑动过期，1分钟
-                 entry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                 //滑动过期，3分钟
+                 entry.SlidingExpiration = TimeSpan.FromMinutes(3);
                  //get client
                  Entities.Client client = await Context.Clients
                       .Where(p => p.ClientId == clientId)

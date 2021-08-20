@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace OnceMi.IdentityServer4.User.Entities
 {
+    [Table(Name = nameof(Users))]
     [Index("index_{TableName}_" + nameof(UserName), nameof(UserName), true)]
     public class Users : IBaseEntity<long>
     {
@@ -32,7 +33,7 @@ namespace OnceMi.IdentityServer4.User.Entities
         public UserStatus Status { get; set; }
 
         /// <summary>
-        /// 
+        /// 性别
         /// </summary>
         public UserGender Gender { get; set; }
 
