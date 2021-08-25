@@ -20,12 +20,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\account\css\style.css.map" />
+    <None Include="wwwroot\account\fonts\bootstrap\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\account\fonts\bootstrap\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\account\fonts\icomoon\icomoon.svg" />
+    <None Include="wwwroot\account\js\bootstrap.min.js" />
+    <None Include="wwwroot\account\js\jquery.min.js" />
+    <None Include="wwwroot\account\js\jquery.placeholder.min.js" />
+    <None Include="wwwroot\account\js\jquery.waypoints.min.js" />
+    <None Include="wwwroot\account\js\main.js" />
+    <None Include="wwwroot\account\js\modernizr-2.6.2.min.js" />
+    <None Include="wwwroot\account\js\respond.min.js" />
+    <None Include="wwwroot\account\sass\style.scss" />
     <None Include="wwwroot\lib\layer\layer.js" />
     <None Include="wwwroot\lib\layer\mobile\layer.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DeviceDetector.NET" Version="4.3.0" />
+    <PackageReference Include="UAParser" Version="3.1.47" />
     <PackageReference Include="FreeSql.Provider.MySql" Version="2.5.200" />
     <PackageReference Include="FreeSql.Provider.Oracle" Version="2.5.200" />
     <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.5.200" />

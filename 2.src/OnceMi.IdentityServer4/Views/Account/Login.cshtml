@@ -2,135 +2,185 @@
 @{
     Layout = null;
 }
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html style="height: 100%;">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 <head>
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
-    <meta http-equiv="Content-Type" content=text/html; charset=utf-8" />
-    <title>登录</title>
-    <link rel="stylesheet" type="text/css" href="/login/css/default.css" />
-    <link rel="stylesheet" type="text/css" href="/login/css/index.css" />
-    <link rel="stylesheet" type="text/css" href="/login/font/iconfont.css" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>登录 - IdentityServer4统一认证服务</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="IdentityServer4统一认证服务" />
+    <meta name="keywords" content="登录,猿米科技,oncemi" />
+    <meta name="author" content="oncemi" />
+
+
+    <meta property="og:title" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="" />
+    <meta property="og:description" content="" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:url" content="" />
+    <meta name="twitter:card" content="" />
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" href="~/favicon.ico" />
+
+    <link rel="stylesheet" href="~/account/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/account/css/animate.css" />
+    <link rel="stylesheet" href="~/account/css/style.css" />
+
+
+    <!-- Modernizr JS -->
+    <script src="~/account/js/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script src="~/account/js/respond.min.js"></script>
+    <![endif]-->
+
 </head>
-<body style="height:100%;">
-    <div class="boxer">
-        <div class="box1">
-            @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
-            {
-                <div class="disable_login">
-                    <strong>非法的登录请求</strong><br />
-                    There are no login schemes configured for this request.
+<body class="style-3">
+    <div class="container">
+        @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+        {
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div style="height: 35px;margin-top:50px">
+                    <h3>非法的登录请求</h3>
+                    <br />
+                    没有为此请求配置登录方案，请联系管理员。
                 </div>
-            }
-            else
-            {
-                <div class="middle1">
-                    <div class="middle_left">
-                        <div class="title_box">
-                            <p class="main_title">通用权限管理系统</p>
-                            <p class="sub_title">前后端分离、.NET5、单点登录、基于角色的权限管理</p>
-                        </div>
-                    </div>
-                    <div class="middle_right">
-                        <div class="mr_box">
-                            <h2>欢迎登录</h2>
-                            <form action="#">
-                                <div class="form-group" style="display:none">
-                                    <input type="text" id="ReturnUrl" value="@Model.ReturnUrl" />
-                                </div>
-                                <div class="form-group">
-                                    <span class="iconfont icon-Profile icon_p"></span>
-                                    <input type="text" class="form-control icon-user" id="Username" placeholder="请输入您的用户名/手机号/邮箱" />
-                                </div>
-                                <div class="form-group mar_b">
-                                    <span class="iconfont icon-Unlock icon_p"></span>
-                                    <input type="password" class="form-control icon-pass" id="Password" placeholder="请输入您的密码" />
-                                </div>
-                                <div class="form-check font-s">
-                                    <div class="custom-control custom-checkbox small">
-                                        <input type="checkbox" class="custom-control-input" id="RememberLogin" />
-                                        <label class="custom-control-label" for="RememberLogin">记住密码</label>
-                                    </div>
-                                </div>
-
-                                @if (Model.VisibleExternalProviders.Any())
-                                {
-                                    <div class="col-sm-6" style="margin: auto;">
-                                        <div class="card">
-                                            @*<div class="card-header">
-                                                    <h2>外部登录</h2>
-                                                </div>*@
-                                            <div class="card-body">
-                                                <ul class="list-inline">
-                                                    @foreach (var provider in Model.VisibleExternalProviders)
-                                                    {
-                                                        <li class="list-inline-item">
-                                                            <a class="btn btn-secondary"
-                                                               asp-controller="External"
-                                                               asp-action="Challenge"
-                                                               asp-route-scheme="@provider.AuthenticationScheme"
-                                                               asp-route-returnUrl="@Model.ReturnUrl">
-                                                                @provider.DisplayName
-                                                            </a>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-
-                                @if (!ViewContext.ModelState.IsValid)
-                                {
-                                    <div class="f_pass">
-                                        <div class="f_pass_n">
-                                            <i class="fl"><img src="/login/images/sq.png" /></i>
-                                            <div asp-validation-summary="All"></div>
-                                        </div>
-                                    </div>
-                                }
-
-                                <button type="submit" class="login" onclick="login(); return false;">登录</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-
+            </div>
         </div>
+        }
+        else
+        {
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div style="height: 35px;"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <!-- Start Sign In Form -->
+                <form action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+                    <h2 class="text-center">登录</h2>
+                    <div class="form-group" style="display:none">
+                        <input type="text" id="returnUrl" value="@Model.ReturnUrl" />
+                    </div>
+                    <div class="form-group">
+                        <label for="username" class="sr-only">用户名</label>
+                        <input type="text" class="form-control" id="username" placeholder="ID/用户名"
+                               autocomplete="off" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="sr-only">密码</label>
+                        <input type="password" class="form-control" id="password" placeholder="密码"
+                               autocomplete="off" />
+                    </div>
+                    <div class="form-group">
+                        <label for="remember"><input type="checkbox" id="remember" /> 记住密码</label>
+                    </div>
+                    <div class="form-group">
+                        <p>没有注册? <a href="sign-up.html">注册</a> | <a href="forgot.html">忘记密码</a></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="登录" class="btn btn-primary" onclick="login(); return false;" />
+                    </div>
+                </form>
+                @if (Model.VisibleExternalProviders.Any())
+                                {
+                <div class="col-sm-6" style="margin: auto;">
+                    <div class="card">
+                        @*<div class="card-header">
+                                <h2>外部登录</h2>
+                            </div>*@
+                        <div class="card-body">
+                            <ul class="list-inline">
+                                @foreach (var provider in Model.VisibleExternalProviders)
+                                                    {
+                                <li class="list-inline-item">
+                                    <a class="btn btn-secondary"
+                                       asp-controller="External"
+                                       asp-action="Challenge"
+                                       asp-route-scheme="@provider.AuthenticationScheme"
+                                       asp-route-returnUrl="@Model.ReturnUrl">
+                                        @provider.DisplayName
+                                    </a>
+                                </li>
+                                                    }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                                }
+
+                @if (!ViewContext.ModelState.IsValid)
+                                {
+                <div class="f_pass">
+                    <div class="f_pass_n">
+                        <i class="fl"><img src="~/account/images/sq.png" /></i>
+                        <div asp-validation-summary="All"></div>
+                    </div>
+                </div>
+                                }
+                <!-- END Sign In Form -->
+            </div>
+        </div>
+        <div class="row" style="padding-top: 60px; clear: both;">
+            <div class="col-md-12 text-center">
+                <p>
+                    <small>
+                        &copy; All Rights Reserved. Designed by <a href="https://www.oncemi.com">OnceMi</a>
+                    </small>
+                </p>
+            </div>
+        </div>
+        }
     </div>
 
-    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="~/account/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/account/js/bootstrap.min.js"></script>
+    <!-- Placeholder -->
+    <script src="~/account/js/jquery.placeholder.min.js"></script>
+    <!-- Waypoints -->
+    <script src="~/account/js/jquery.waypoints.min.js"></script>
+    <!-- Main JS -->
+    <script src="~/account/js/main.js"></script>
     <script type="text/javascript" src="~/lib/encrypt/sha256.min.js"></script>
     <script type="text/javascript" src="~/lib/layer/layer.js"></script>
     <script>
         function login() {
-            var username = $("#Username").val();
-            var password = $("#Password").val();
-            var rememberLogin = $("#RememberLogin").val() === "on" ? true : false;
-            var returnUrl = $("#ReturnUrl").val();
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var rememberLogin = $("#remember").prop('checked') === true ? true : false;
+            var returnUrl = $("#returnUrl").val();
             var code = "oncemi";
 
             if (username == undefined || username.length == 0) {
-                layer.tips('请输入您的用户名/手机号/邮箱。', '#Username', {
+                layer.tips('请输入您的用户名/手机号/邮箱。', '#username', {
                     tips: [3, '#14a7ff'],
                     time: 4000
                 });
                 return;
             }
             if (password == undefined || password.length == 0) {
-                layer.tips('请输入密码。', '#Password', {
+                layer.tips('请输入密码。', '#password', {
                     tips: [3, '#14a7ff'],
                     time: 4000
                 });
                 return;
             }
-            layer.msg('登录中...', {
-                icon: 16,
-                shade: 0.01,
-                time: 2000000
-            });
+            //加载
+            layer.load(2);;
             $.post("/Account/Login?button=login", {
                 Username: username,
                 Password: sha256(password).toLowerCase(),
@@ -152,7 +202,8 @@
                             dataObj = data;
                         }
                         if (dataObj.code == 0) {
-                            $("#layui-layer" + layer.msg("登录成功，即将跳转...")).find(".layui-layer-content").css("color", "white");
+                            //$("#layui-layer" + layer.msg("登录成功，即将跳转...")).find(".layui-layer-content").css("color", "white");
+                            layer.msg("登录成功，即将跳转...")
                             var redirectUrl = "/";
                             if (dataObj.data != null && dataObj.data.isRedirect && dataObj.data.redirectUrl != null) {
                                 redirectUrl = dataObj.data.redirectUrl;

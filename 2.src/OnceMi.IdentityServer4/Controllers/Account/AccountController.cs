@@ -70,7 +70,6 @@ namespace OnceMi.IdentityServer4.Controllers
         {
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
-
             if (vm.IsExternalLoginOnly)
             {
                 // we only have one option for logging in and it's an external provider
@@ -143,16 +142,16 @@ namespace OnceMi.IdentityServer4.Controllers
                 .FirstAsync();
             if (userInfo != null && userInfo.Authenticate(model.Password))
             {
-                RequestHelper requestHelper = new RequestHelper(HttpContext);
+                UserAgentParser parser = new UserAgentParser(HttpContext);
                 //写登录日志
                 await _userDbContext.LoginHistory.AddAsync(new LoginHistory()
                 {
                     Id = _idGenerator.NewId(),
                     UserId = userInfo.Id,
-                    IP = requestHelper.GetRequestIpAddress(),
-                    Browser = requestHelper.GetBrowser(),
-                    OS = requestHelper.GetOSName(),
-                    Device = requestHelper.GetDevice(),
+                    IP = parser.GetRequestIpAddress(),
+                    Browser = parser.GetBrowser(),
+                    OS = parser.GetOS(),
+                    Device = parser.GetDevice(),
                     UserAgent = Request.Headers["User-Agent"],
                     Type = LoginHistoryType.Login,
                     Status = true,
@@ -279,20 +278,20 @@ namespace OnceMi.IdentityServer4.Controllers
                 // save login history
                 if (!string.IsNullOrEmpty(User.GetSubjectId()) && long.TryParse(User.GetSubjectId(), out long userId))
                 {
-                    RequestHelper requestHelper = new RequestHelper(HttpContext);
-                    //写登出日志
+                    UserAgentParser parser = new UserAgentParser(HttpContext);
+                    //写离线日志
                     await _userDbContext.LoginHistory.AddAsync(new LoginHistory()
                     {
                         Id = _idGenerator.NewId(),
                         UserId = userId,
-                        IP = requestHelper.GetRequestIpAddress(),
-                        Browser = requestHelper.GetBrowser(),
-                        OS = requestHelper.GetOSName(),
-                        Device = requestHelper.GetDevice(),
+                        IP = parser.GetRequestIpAddress(),
+                        Browser = parser.GetBrowser(),
+                        OS = parser.GetOS(),
+                        Device = parser.GetDevice(),
                         UserAgent = Request.Headers["User-Agent"],
                         Type = LoginHistoryType.Logout,
                         Status = true,
-                        Message = "退出登录成功",
+                        Message = "退出成功",
                     });
                     await _userDbContext.SaveChangesAsync();
                 }
@@ -394,10 +393,10 @@ namespace OnceMi.IdentityServer4.Controllers
 
         private async Task<LogoutViewModel> BuildLogoutViewModelAsync(string logoutId)
         {
-            var vm = new LogoutViewModel 
-            { 
-                LogoutId = logoutId, 
-                ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt 
+            var vm = new LogoutViewModel
+            {
+                LogoutId = logoutId,
+                ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt
             };
 
             if (User?.Identity.IsAuthenticated != true)

@@ -309,7 +309,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         ClientName = "后台管理系统Vue客户端",
                         ClientUri = "",
                         RequireClientSecret = false,
-                        RequireConsent = true,
+                        RequireConsent = false,
                         AllowRememberConsent = true,
                         AllowPlainTextPkce = false,
                         AllowAccessTokensViaBrowser = true,
