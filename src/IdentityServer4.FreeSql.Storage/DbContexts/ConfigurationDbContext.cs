@@ -139,94 +139,94 @@ namespace IdentityServer4.FreeSql.Storage.DbContexts
 
         protected new void OnModelCreating(ICodeFirst codefirst)
         {
-            #region Config Entity
+            //#region Config Entity
 
-            codefirst.Entity<ApiResourceClaim>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiResourceClaim.Name);
-            });
-            codefirst.Entity<ApiResourceProperty>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiResourceProperty.Name);
-            });
-            codefirst.Entity<ApiResource>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiResource.Name);
-            });
-            codefirst.Entity<ApiResourceScope>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiResourceScope.Name);
-            });
-            codefirst.Entity<ApiResourceSecret>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiResourceSecret.Name);
-            });
-            codefirst.Entity<ApiScopeClaim>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiScopeClaim.Name);
-            });
-            codefirst.Entity<ApiScopeProperty>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiScopeProperty.Name);
-            });
-            codefirst.Entity<ApiScope>(entity =>
-            {
-                entity.ToTable(_storeOptions.ApiScope.Name);
-            });
-            codefirst.Entity<ClientCorsOrigin>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientCorsOrigin.Name);
-            });
-            codefirst.Entity<Client>(entity =>
-            {
-                entity.ToTable(_storeOptions.Client.Name);
-            });
-            codefirst.Entity<ClientClaim>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientClaim.Name);
-            });
-            codefirst.Entity<ClientGrantType>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientGrantType.Name);
-            });
-            codefirst.Entity<ClientIdPRestriction>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientIdPRestriction.Name);
-            });
-            codefirst.Entity<ClientPostLogoutRedirectUri>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientPostLogoutRedirectUri.Name);
-            });
-            codefirst.Entity<ClientProperty>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientProperty.Name);
-            });
-            codefirst.Entity<ClientRedirectUri>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientRedirectUri.Name);
-            });
-            codefirst.Entity<ClientScope>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientScopes.Name);
-            });
-            codefirst.Entity<ClientSecret>(entity =>
-            {
-                entity.ToTable(_storeOptions.ClientSecret.Name);
-            });
-            codefirst.Entity<IdentityResourceClaim>(entity =>
-            {
-                entity.ToTable(_storeOptions.IdentityResourceClaim.Name);
-            });
-            codefirst.Entity<IdentityResourceProperty>(entity =>
-            {
-                entity.ToTable(_storeOptions.IdentityResourceProperty.Name);
-            });
-            codefirst.Entity<IdentityResource>(entity =>
-            {
-                entity.ToTable(_storeOptions.IdentityResource.Name);
-            });
+            //codefirst.Entity<ApiResourceClaim>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiResourceClaim.Name);
+            //});
+            //codefirst.Entity<ApiResourceProperty>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiResourceProperty.Name);
+            //});
+            //codefirst.Entity<ApiResource>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiResource.Name);
+            //});
+            //codefirst.Entity<ApiResourceScope>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiResourceScope.Name);
+            //});
+            //codefirst.Entity<ApiResourceSecret>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiResourceSecret.Name);
+            //});
+            //codefirst.Entity<ApiScopeClaim>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiScopeClaim.Name);
+            //});
+            //codefirst.Entity<ApiScopeProperty>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiScopeProperty.Name);
+            //});
+            //codefirst.Entity<ApiScope>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ApiScope.Name);
+            //});
+            //codefirst.Entity<ClientCorsOrigin>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientCorsOrigin.Name);
+            //});
+            //codefirst.Entity<Client>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.Client.Name);
+            //});
+            //codefirst.Entity<ClientClaim>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientClaim.Name);
+            //});
+            //codefirst.Entity<ClientGrantType>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientGrantType.Name);
+            //});
+            //codefirst.Entity<ClientIdPRestriction>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientIdPRestriction.Name);
+            //});
+            //codefirst.Entity<ClientPostLogoutRedirectUri>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientPostLogoutRedirectUri.Name);
+            //});
+            //codefirst.Entity<ClientProperty>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientProperty.Name);
+            //});
+            //codefirst.Entity<ClientRedirectUri>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientRedirectUri.Name);
+            //});
+            //codefirst.Entity<ClientScope>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientScopes.Name);
+            //});
+            //codefirst.Entity<ClientSecret>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.ClientSecret.Name);
+            //});
+            //codefirst.Entity<IdentityResourceClaim>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.IdentityResourceClaim.Name);
+            //});
+            //codefirst.Entity<IdentityResourceProperty>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.IdentityResourceProperty.Name);
+            //});
+            //codefirst.Entity<IdentityResource>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.IdentityResource.Name);
+            //});
 
-            #endregion
+            //#endregion
 
             #region Create Table
 

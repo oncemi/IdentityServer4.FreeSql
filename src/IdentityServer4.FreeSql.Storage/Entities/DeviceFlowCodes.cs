@@ -6,6 +6,7 @@ namespace IdentityServer4.FreeSql.Storage.Entities
     /// <summary>
     /// Entity for device flow codes
     /// </summary>
+    [Table(Name = "ids_device_flow_codes")]
     [Index("index_{TableName}_" + nameof(Expiration), nameof(Expiration), false)]
     [Index("index_{TableName}_" + nameof(DeviceCode), nameof(DeviceCode), true)]
     public class DeviceFlowCodes

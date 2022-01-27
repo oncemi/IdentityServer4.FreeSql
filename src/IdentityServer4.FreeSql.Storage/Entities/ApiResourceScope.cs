@@ -7,6 +7,7 @@ using FreeSql.DataAnnotations;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_api_resource_scopes")]
     public class ApiResourceScope : IEntity<long>
     {
         [Column(StringLength = 200, IsNullable = false)]

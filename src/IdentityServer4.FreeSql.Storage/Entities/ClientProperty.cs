@@ -8,6 +8,7 @@ using FreeSql.DataAnnotations;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_client_properties")]
     public class ClientProperty : Property
     {
         public long ClientId { get; set; }

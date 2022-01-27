@@ -70,7 +70,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         break;
                     case JwtClaimTypes.Role:
                         {
-                            List<Roles> roles = await _userDbContext.Roles
+                            List<Role> roles = await _userDbContext.Roles
                                 .Where(p => !p.IsDeleted && p.IsEnabled && p.Users.AsSelect().Any(x => x.Id.ToString() == sub))
                                 .ToListAsync();
                             if (roles != null && roles.Count > 0)
@@ -84,7 +84,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         break;
                     case OrganizeJwtClaimType.Organize:
                         {
-                            List<Organizes> organizes = await _userDbContext.Organizes
+                            List<Organize> organizes = await _userDbContext.Organizes
                                 .Where(p => !p.IsDeleted && p.IsEnabled && p.Users.AsSelect().Any(x => x.Id.ToString() == sub))
                                 .ToListAsync();
                             if (organizes != null && organizes.Count > 0)

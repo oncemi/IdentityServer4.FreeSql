@@ -6,9 +6,9 @@ namespace OnceMi.IdentityServer4.Models
 {
     public class TestUserData
     {
-        public List<Roles> Roles { get; set; }
+        public List<Role> Roles { get; set; }
 
-        public List<Users> Users { get; set; }
+        public List<UserInfo> Users { get; set; }
 
         public List<IdentityResource> Resources { get; set; }
 

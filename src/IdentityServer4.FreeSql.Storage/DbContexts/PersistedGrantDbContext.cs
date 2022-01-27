@@ -84,14 +84,14 @@ namespace IdentityServer4.FreeSql.Storage.DbContexts
 
         protected new void OnModelCreating(ICodeFirst codefirst)
         {
-            codefirst.Entity<PersistedGrant>(entity =>
-            {
-                entity.ToTable(_storeOptions.PersistedGrants.Name);
-            });
-            codefirst.Entity<DeviceFlowCodes>(entity =>
-            {
-                entity.ToTable(_storeOptions.DeviceFlowCodes.Name);
-            });
+            //codefirst.Entity<PersistedGrant>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.PersistedGrants.Name);
+            //});
+            //codefirst.Entity<DeviceFlowCodes>(entity =>
+            //{
+            //    entity.ToTable(_storeOptions.DeviceFlowCodes.Name);
+            //});
 
             if (codefirst.IsAutoSyncStructure)
             {

@@ -141,23 +141,8 @@ namespace OnceMi.IdentityServer4.Controllers
                 .FirstAsync();
             if (userInfo != null && userInfo.AuthenticatePassword(model.Password))
             {
-                UserAgentParser parser = new UserAgentParser(HttpContext);
                 //写登录日志
-                await _userDbContext.LoginHistory.AddAsync(new LoginHistory()
-                {
-                    Id = _idGenerator.NewId(),
-                    UserId = userInfo.Id,
-                    IP = parser.GetRequestIpAddress(),
-                    Browser = parser.GetBrowser(),
-                    OS = parser.GetOS(),
-                    Device = parser.GetDevice(),
-                    UserAgent = Request.Headers["User-Agent"],
-                    Type = LoginHistoryType.Login,
-                    Status = true,
-                    Message = "登录成功",
-                });
-                await _userDbContext.SaveChangesAsync();
-
+                await WriteSignHistory(userInfo.Id, LoginHistoryType.Login);
                 //var user = _users.FindByUsername(model.Username);
                 await _events.RaiseAsync(new UserLoginSuccessEvent(userInfo.UserName, userInfo.Id.ToString(), userInfo.NickName, clientId: context?.Client.ClientId));
 
@@ -277,22 +262,8 @@ namespace OnceMi.IdentityServer4.Controllers
                 // save login history
                 if (!string.IsNullOrEmpty(User.GetSubjectId()) && long.TryParse(User.GetSubjectId(), out long userId))
                 {
-                    UserAgentParser parser = new UserAgentParser(HttpContext);
                     //写离线日志
-                    await _userDbContext.LoginHistory.AddAsync(new LoginHistory()
-                    {
-                        Id = _idGenerator.NewId(),
-                        UserId = userId,
-                        IP = parser.GetRequestIpAddress(),
-                        Browser = parser.GetBrowser(),
-                        OS = parser.GetOS(),
-                        Device = parser.GetDevice(),
-                        UserAgent = Request.Headers["User-Agent"],
-                        Type = LoginHistoryType.Logout,
-                        Status = true,
-                        Message = "退出成功",
-                    });
-                    await _userDbContext.SaveChangesAsync();
+                    await WriteSignHistory(userId, LoginHistoryType.Login);
                 }
             }
 
@@ -454,6 +425,27 @@ namespace OnceMi.IdentityServer4.Controllers
             }
 
             return vm;
+        }
+
+        private async Task WriteSignHistory(long userId, LoginHistoryType type)
+        {
+            UserAgentParser parser = new UserAgentParser(HttpContext);
+            var history = new LoginHistory()
+            {
+                Id = _idGenerator.NewId(),
+                UserId = userId,
+                IP = parser.GetRequestIpAddress(),
+                Browser = parser.GetBrowser(),
+                OS = parser.GetOS(),
+                Device = parser.GetDevice(),
+                UserAgent = _accessor.HttpContext.Request.Headers["User-Agent"],
+                Type = type,
+                Status = true,
+                Message = type == LoginHistoryType.Login ? "登录" : "退出",
+            };
+            //写登录日志
+            await _userDbContext.LoginHistory.AddAsync(history);
+            await _userDbContext.SaveChangesAsync();
         }
 
         #endregion

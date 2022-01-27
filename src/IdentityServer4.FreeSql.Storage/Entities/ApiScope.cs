@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_api_scopes")]
     public class ApiScope : IEntity<long>
     {
         public bool Enabled { get; set; } = true;

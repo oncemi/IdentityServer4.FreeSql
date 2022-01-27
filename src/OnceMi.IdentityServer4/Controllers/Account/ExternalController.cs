@@ -141,7 +141,7 @@ namespace OnceMi.IdentityServer4.Controllers
             return Redirect(returnUrl);
         }
 
-        private (Users user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
+        private (UserInfo user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
 

@@ -8,6 +8,7 @@ using FreeSql.DataAnnotations;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_client_redirect_uri")]
     public class ClientRedirectUri : IEntity<long>
     {
         [Column(DbType = "text", IsNullable = false)]

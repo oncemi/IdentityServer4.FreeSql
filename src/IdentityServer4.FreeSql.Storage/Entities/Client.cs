@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_clients")]
     [Index("index_{TableName}_" + nameof(ClientId), nameof(ClientId), true)]
     public class Client : IEntity<long>
     {

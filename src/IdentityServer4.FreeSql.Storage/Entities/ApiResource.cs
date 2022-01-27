@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_api_resources")]
     [Index("index_{TableName}_" + nameof(Name), nameof(Name), false)]
     public class ApiResource : IEntity<long>
     {

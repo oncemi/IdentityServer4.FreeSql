@@ -9,6 +9,7 @@ using System;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_persisted_grant")]
     [Index("index_{TableName}_" + nameof(SubjectId), nameof(SubjectId), false)]
     [Index("index_{TableName}_" + nameof(ClientId), nameof(ClientId), false)]
     [Index("index_{TableName}_" + nameof(Type), nameof(Type), false)]

@@ -16,19 +16,19 @@ namespace OnceMi.IdentityServer4.User
             this._freeSql = freeSql ?? throw new ArgumentNullException(nameof(IFreeSql<UserDbContext>));
         }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<UserInfo> Users { get; set; }
 
         public DbSet<UserToken> UserToken { get; set; }
 
         public DbSet<UserRole> UserRole { get; set; }
 
-        public DbSet<Roles> Roles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public DbSet<LoginHistory> LoginHistory { get; set; }
 
-        public DbSet<Organizes> Organizes { get; set; }
+        public DbSet<Organize> Organizes { get; set; }
 
-        public DbSet<OrganizeManagers> OrganizeManagers { get; set; }
+        public DbSet<OrganizeManager> OrganizeManagers { get; set; }
 
         public DbSet<UserOrganize> UserOrganize { get; set; }
 

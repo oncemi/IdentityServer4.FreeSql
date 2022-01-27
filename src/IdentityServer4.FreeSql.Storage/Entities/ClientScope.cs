@@ -8,6 +8,7 @@ using FreeSql.DataAnnotations;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_client_scopes")]
     public class ClientScope : IEntity<long>
     {
         [Column(StringLength = 255, IsNullable = false)]

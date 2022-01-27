@@ -10,6 +10,7 @@ using System.Collections.Generic;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_identity_resources")]
     [Index("index_{TableName}_" + nameof(Name), nameof(Name), true)]
     public class IdentityResource : IEntity<long>
     {

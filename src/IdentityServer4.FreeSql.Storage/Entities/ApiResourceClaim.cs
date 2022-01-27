@@ -7,6 +7,7 @@ using FreeSql.DataAnnotations;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_api_resource_claims")]
     public class ApiResourceClaim : UserClaim
     {
         public long ApiResourceId { get; set; }

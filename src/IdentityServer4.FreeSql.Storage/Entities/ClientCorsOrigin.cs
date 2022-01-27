@@ -8,6 +8,7 @@ using FreeSql.DataAnnotations;
 
 namespace IdentityServer4.FreeSql.Storage.Entities
 {
+    [Table(Name = "ids_client_cors_origins")]
     public class ClientCorsOrigin : IEntity<long>
     {
         [Column(StringLength = 150, IsNullable = false)]
