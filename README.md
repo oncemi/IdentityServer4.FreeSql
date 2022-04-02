@@ -10,8 +10,8 @@ Demo: 现在IdentityServer4转向收费，IdentityServer4也就不提供Demo了�
 ## How to use  
 1. 下载项目  
 2. 运行`OnceMi.IdentityServer4`  
-默认采用Sqlite数据库，你可以切换到你喜欢的数据库，数据库配置在`appsettings.XXX.json`中(XXX表示运行环境，开发环境为Development)。第一次运行会初始化数据库，并写入测试数据。
-默认不会生成用户数据，IdentityServer4不管理用户数据，所以需要运行OnceMi.Framework项目来初始化用户数据。
+默认采用Sqlite数据库，你可以切换到你喜欢的数据库，数据库配置在`appsettings.XXX.json`中(XXX表示运行环境，开发环境为Development)。第一次运行会初始化数据库，并写入测试数据。  
+默认不会生成用户数据，IdentityServer4不管理用户数据，所以需要运行OnceMi.Framework项目来初始化用户数据。  
 
 ## Remark
 1. 项目全部采用.NET 6开发，同时也建议升级到.NET 6。  
