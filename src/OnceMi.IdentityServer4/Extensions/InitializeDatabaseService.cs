@@ -39,7 +39,7 @@ namespace OnceMi.IdentityServer4.Extensions
                 {
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = JwtClaimTypes.Role,
                         Enabled = true,
                         Required = false,
@@ -48,14 +48,14 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Role,
                             }
                         }
                     },
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = OrganizeJwtClaimType.Organize,
                         Enabled = true,
                         Required = false,
@@ -64,14 +64,14 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = OrganizeJwtClaimType.Organize,
                             }
                         }
                     },
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = IdentityServerConstants.StandardScopes.OpenId,
                         Enabled = true,
                         Required = true,
@@ -80,14 +80,14 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Subject,
                             }
                         }
                     },
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = IdentityServerConstants.StandardScopes.Profile,
                         Enabled = true,
                         Required = true,
@@ -96,59 +96,59 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Name,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.FamilyName,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.GivenName,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.MiddleName,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.NickName,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.PreferredUserName,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Profile,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Picture,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Gender,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.WebSite,
                             }
                         }
                     },
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = IdentityServerConstants.StandardScopes.Email,
                         Enabled = true,
                         Required = false,
@@ -157,19 +157,19 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Email,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.EmailVerified,
                             }
                         }
                     },
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = IdentityServerConstants.StandardScopes.Address,
                         Enabled = true,
                         Required = false,
@@ -178,14 +178,14 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Address,
                             }
                         }
                     },
                     new IdentityResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = IdentityServerConstants.StandardScopes.Phone,
                         Enabled = true,
                         Required = false,
@@ -194,12 +194,12 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.PhoneNumber,
                             },
                             new IdentityResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.PhoneNumberVerified,
                             }
                         }
@@ -210,14 +210,14 @@ namespace OnceMi.IdentityServer4.Extensions
                 {
                     new ApiScope()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = "api1",
                         DisplayName = "api1",
                         UserClaims = new List<ApiScopeClaim>(),
                     },
                     new ApiScope()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = "client_management",
                         DisplayName = "client_management",
                         UserClaims = new List<ApiScopeClaim>(),
@@ -228,14 +228,14 @@ namespace OnceMi.IdentityServer4.Extensions
                 {
                     new ApiResource()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         Name = "api1",
                         DisplayName = "api1",
                         Scopes = new List<ApiResourceScope>()
                         {
                             new ApiResourceScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = apiScopes.Where(p=>p.DisplayName == "api1").FirstOrDefault()?.Name
                             }
                         },
@@ -243,57 +243,57 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Subject,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Profile,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Picture,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Name,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.NickName,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Role,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = OrganizeJwtClaimType.Organize,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.Email,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.EmailVerified,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.PhoneNumber,
                             },
                             new ApiResourceClaim()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Type = JwtClaimTypes.PhoneNumberVerified,
                             },
                         }
@@ -304,7 +304,7 @@ namespace OnceMi.IdentityServer4.Extensions
                 {
                     new Client()
                     {
-                        Id = idGenerator.NewId(),
+                        Id = idGenerator.CreateId(),
                         ClientId = "5954398486",
                         ClientName = "后台管理系统Vue客户端",
                         ClientUri = "",
@@ -321,7 +321,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ClientCorsOrigin()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Origin = "http://localhost:8080",
                             }
                         },
@@ -329,7 +329,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ClientGrantType()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 GrantType = "authorization_code",
                             }
                         },
@@ -338,7 +338,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ClientSecret()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Value = "oYjppIizd29W4eodalgf+Vry0MfyLunBPVZeFmOelvU="
                             }
                         },
@@ -346,12 +346,12 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ClientRedirectUri()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 RedirectUri = "http://localhost:8080/#/callback"
                             },
                             new ClientRedirectUri()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 RedirectUri = "http://localhost:8080/#/refresh"
                             }
                         },
@@ -360,7 +360,7 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ClientPostLogoutRedirectUri()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 PostLogoutRedirectUri = "http://localhost:8080",
                             }
                         },
@@ -368,42 +368,42 @@ namespace OnceMi.IdentityServer4.Extensions
                         {
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = JwtClaimTypes.Subject,
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = "openid",
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = JwtClaimTypes.Email,
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = JwtClaimTypes.PhoneNumber,
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = JwtClaimTypes.Profile,
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = JwtClaimTypes.Role,
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = OrganizeJwtClaimType.Organize,
                             },
                             new ClientScope()
                             {
-                                Id = idGenerator.NewId(),
+                                Id = idGenerator.CreateId(),
                                 Scope = "api1",
                             },
                         }

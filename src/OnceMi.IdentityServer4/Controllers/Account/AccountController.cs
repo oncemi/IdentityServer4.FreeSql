@@ -432,7 +432,7 @@ namespace OnceMi.IdentityServer4.Controllers
             UserAgentParser parser = new UserAgentParser(HttpContext);
             var history = new LoginHistory()
             {
-                Id = _idGenerator.NewId(),
+                Id = _idGenerator.CreateId(),
                 UserId = userId,
                 IP = parser.GetRequestIpAddress(),
                 Browser = parser.GetBrowser(),
